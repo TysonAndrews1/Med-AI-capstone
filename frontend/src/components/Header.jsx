@@ -5,7 +5,7 @@ export default function Header(){
     return (
         <div className="flex justify-between items-center p-4  rounded-lg shadow-md w-full h-[18%]">
           {/* Centered Content - Icon, Title, Subtitle */}
-          <div className="flex items-center space-x-4 mx-auto bg-custom-color">
+          <div className="flex items-center space-x-4 mx-auto bg-custom-color pl-40">
             {/* <icon className="w-6 h-6" /> Adjust icon size as needed */}
             <div className="text-center">
               <p className="text-5xl font-semibold text-[#1B4D3E] ">MediHealth Ai</p>
