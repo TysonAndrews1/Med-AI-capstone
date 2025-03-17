@@ -1,6 +1,10 @@
+// Reference: https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety
+// This reference was used to learn how to store API keys securely in a Next.js app instead of the frontend.
+
 "use client";
 
 import React, { useState } from "react";
+import { getMealRecommendations } from "../utils/openai"; // Import OpenAI API function
 
 const questions = [
   {
@@ -38,6 +42,7 @@ const questions = [
 export default function DietAssistant() {
   const [answers, setAnswers] = useState({});
   const [step, setStep] = useState(0);
+  const [aiRecommendation, setAiRecommendation] = useState("");
 
   const handleSelect = (questionId, option) => {
     setAnswers((prev) => {
@@ -46,33 +51,40 @@ export default function DietAssistant() {
       if (questionId === 5) { // Only allow the user to select one option for question 5.
         return { ...prev, [questionId]: [option] };
       }
-  
-      if (option === "None") { // If the user selects "None", then the other options are removed.
-        if (selectedOptions.includes("None")) {
-          return { ...prev, [questionId]: [] };
-        }
-        return { ...prev, [questionId]: ["None"] };
 
+      if (option === "None") { // If the user selects "None", then the other options are removed.
+        return selectedOptions.includes("None") ? { ...prev, [questionId]: [] } : { ...prev, [questionId]: ["None"] };
       } else {
         if (selectedOptions.includes("None")) { // If the user selects an option other than "None", then "None" is removed.
           return prev;
         }
-
-        if (selectedOptions.includes(option)) { // If the user selects an option that is already selected, then it is removed.
-          return { ...prev, [questionId]: selectedOptions.filter((item) => item !== option) };
-        } else {
-          return { ...prev, [questionId]: [...selectedOptions, option] };
-        }
+        return selectedOptions.includes(option) // If the user selects an option that is already selected, then it is removed.
+          ? { ...prev, [questionId]: selectedOptions.filter((item) => item !== option) }
+          : { ...prev, [questionId]: [...selectedOptions, option] };
       }
     });
-  };  
-  
-  const handleNext = () => { // This function is used to handle the next button click.
+  };
+
+  const handleNext = async () => { // This function is used to handle the next button click.
     if (step < questions.length - 1) {
       setStep(step + 1); // This is used to increment the step to move to the next question.
     } else {
       console.log("User responses:", answers);
-      alert("Submitting responses...");
+
+      const userProfile = {
+        Health_Goals: answers[1]?.join(", ") || "Not specified",
+        Dietary_Restrictions: answers[2]?.join(", ") || "None",
+        Food_Allergies: answers[3]?.join(", ") || "None",
+        Foods_Avoided: answers[4]?.join(", ") || "None",
+        Activity_Level: answers[5]?.[0] || "Not specified",
+        Height: answers[6]?.height || "Not specified",
+        Weight: answers[6]?.weight || "Not specified",
+        Desired_Weight: answers[6]?.desiredWeight || "Not specified",
+        Additional_Details: answers.extra || "None provided",
+      };
+
+      const response = await getMealRecommendations(userProfile);
+      setAiRecommendation(response);
     }
   };
 
@@ -97,66 +109,17 @@ export default function DietAssistant() {
             <div className="flex flex-col space-y-3 mt-4 px-2 flex-grow overflow-y-auto">
               {questions[step].id === 6 ? (
                 <div className="flex flex-col space-y-4">
-                  <div className="flex flex-col">
-                    <label className="text-lg font-semibold text-gray-700 mb-1">Height (cm)</label>
-                    <input
-                      type="text"
-                      className="w-full p-3 border rounded-lg text-lg"
-                      placeholder="Enter your height in cm"
-                      value={answers[6]?.height || ""}
-                      onChange={(e) =>
-                        setAnswers((prev) => ({
-                          ...prev,
-                          6: { ...prev[6], height: e.target.value },
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <label className="text-lg font-semibold text-gray-700 mb-1">Weight (lbs)</label>
-                    <input
-                      type="text"
-                      className="w-full p-3 border rounded-lg text-lg"
-                      placeholder="Enter your weight in lbs"
-                      value={answers[6]?.weight || ""}
-                      onChange={(e) =>
-                        setAnswers((prev) => ({
-                          ...prev,
-                          6: { ...prev[6], weight: e.target.value },
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <label className="text-lg font-semibold text-gray-700 mb-1">Desired Weight (lbs)</label>
-                    <input
-                      type="text"
-                      className="w-full p-3 border rounded-lg text-lg"
-                      placeholder="Enter your desired weight in lbs"
-                      value={answers[6]?.desiredWeight || ""}
-                      onChange={(e) =>
-                        setAnswers((prev) => ({
-                          ...prev,
-                          6: { ...prev[6], desiredWeight: e.target.value },
-                        }))
-                      }
-                    />
-                  </div>
+                  <input type="text" className="w-full p-3 border rounded-lg text-lg" placeholder="Enter your height (cm)"
+                    value={answers[6]?.height || ""} onChange={(e) => setAnswers((prev) => ({ ...prev, 6: { ...prev[6], height: e.target.value } }))} />
+                  <input type="text" className="w-full p-3 border rounded-lg text-lg" placeholder="Enter your weight (lbs)"
+                    value={answers[6]?.weight || ""} onChange={(e) => setAnswers((prev) => ({ ...prev, 6: { ...prev[6], weight: e.target.value } }))} />
+                  <input type="text" className="w-full p-3 border rounded-lg text-lg" placeholder="Enter your desired weight (lbs)"
+                    value={answers[6]?.desiredWeight || ""} onChange={(e) => setAnswers((prev) => ({ ...prev, 6: { ...prev[6], desiredWeight: e.target.value } }))} />
                 </div>
               ) : (
                 questions[step].options.map((option) => (
-                  <button
-                    key={option}
-                    className={`px-6 py-3 text-lg rounded-lg border ${
-                      answers[questions[step].id]?.includes(option)
-                        ? "bg-[#1B4D3E] text-white"
-                        : "bg-gray-100 hover:bg-gray-300"
-                    }`}
-                    onClick={() => handleSelect(questions[step].id, option)}
-                  >
-                    {option}
+                  <button key={option} className={`px-6 py-3 text-lg rounded-lg border ${answers[questions[step].id]?.includes(option) ? "bg-[#1B4D3E] text-white" : "bg-gray-100 hover:bg-gray-300"}`}
+                    onClick={() => handleSelect(questions[step].id, option)}>{option}
                   </button>
                 ))
               )}
@@ -173,16 +136,20 @@ export default function DietAssistant() {
             </div>
 
             <div className="w-full flex justify-center mt-6">
-              <button
-                className="w-full px-8 py-3 bg-[#1B4D3E] text-white rounded-lg text-lg"
-                onClick={handleNext}
-              >
+              <button className="w-full px-8 py-3 bg-[#1B4D3E] text-white rounded-lg text-lg" onClick={handleNext}>
                 {step < questions.length - 1 ? "Next" : "Submit"}
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {aiRecommendation && (
+        <div className="mt-6 p-6 bg-white rounded-lg shadow-lg w-[550px]">
+          <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">AI Recommended Meals:</h3>
+          <p className="text-gray-700 whitespace-pre-line">{aiRecommendation}</p>
+        </div>
+      )}
     </div>
   );
 }
