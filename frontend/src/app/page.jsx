@@ -1,7 +1,10 @@
 import React from "react"
+import ChatScreen from "./Chatbot/ChatScreen"
 
 export default function IndexPage(){
-
-
-    return (<p>home page</p>)
+    return (
+        <div>
+            <ChatScreen />
+        </div>
+    )
 }
