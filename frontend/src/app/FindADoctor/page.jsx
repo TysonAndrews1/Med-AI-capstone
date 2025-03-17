@@ -8,10 +8,8 @@ export default function Page() {
   return (
     <div className="text-center px-20 py-10">
       {showQuestionnaire ? (
-        // Render the Questionnaire component
         <Questionnaire />
       ) : (
-        // Render the welcome message and button
         <div>
           <h1 className="text-2xl font-bold"> 👋 Welcome to MediHealth Ai!</h1>
           <p className="text-sm font-light">

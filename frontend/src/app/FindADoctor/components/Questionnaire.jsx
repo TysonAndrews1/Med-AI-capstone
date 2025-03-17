@@ -25,10 +25,15 @@ const Questionnaire = () => {
     }
   };
 
+  const completeQ = () => {
+    // Implement logic to submit the answers to the backend
+    console.log("Answers submitted!");
+  };
+
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
-      <h2 className="text-xl font-semibold">{questions[currentQ].text}</h2>
+      <h2 className="text-2xl font-semibold">{questions[currentQ].question}</h2>
       <div className="mt-4">
         {questions[currentQ].options.map((option) => (
           <button
@@ -45,11 +50,13 @@ const Questionnaire = () => {
             Previous
           </button>
         )}
-        {currentQ < questions.length - 1 && (
+        {currentQ < questions.length - 1 ? (
           <button onClick={handleNext} className="px-4 py-2 bg-[#1B4D3E] text-white rounded">
             Next
           </button>
-        )}
+        ) : <button onClick={completeQ} className="px-4 py-2 bg-[#1B4D3E] text-white rounded">
+        submit
+      </button>}
       </div>
     </div>
   );
