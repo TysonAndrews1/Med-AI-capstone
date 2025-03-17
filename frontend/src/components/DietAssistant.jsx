@@ -39,17 +39,34 @@ export default function DietAssistant() {
   const [answers, setAnswers] = useState({});
   const [step, setStep] = useState(0);
 
-  const handleSelect = (questionId, option) => { // This function is used to handle the selection of options for each question.
+  const handleSelect = (questionId, option) => {
     setAnswers((prev) => {
-      const selectedOptions = prev[questionId] || []; // This is used to get the selected options for the current question.
-      if (selectedOptions.includes(option)) {
-        return { ...prev, [questionId]: selectedOptions.filter((item) => item !== option) }; // This is used to remove the option if it is already selected.
+      const selectedOptions = prev[questionId] || [];
+
+      if (questionId === 5) { // Only allow the user to select one option for question 5.
+        return { ...prev, [questionId]: [option] };
+      }
+  
+      if (option === "None") { // If the user selects "None", then the other options are removed.
+        if (selectedOptions.includes("None")) {
+          return { ...prev, [questionId]: [] };
+        }
+        return { ...prev, [questionId]: ["None"] };
+
       } else {
-        return { ...prev, [questionId]: [...selectedOptions, option] }; // This is used to add the option if it is not already selected.
+        if (selectedOptions.includes("None")) { // If the user selects an option other than "None", then "None" is removed.
+          return prev;
+        }
+
+        if (selectedOptions.includes(option)) { // If the user selects an option that is already selected, then it is removed.
+          return { ...prev, [questionId]: selectedOptions.filter((item) => item !== option) };
+        } else {
+          return { ...prev, [questionId]: [...selectedOptions, option] };
+        }
       }
     });
-  };
-
+  };  
+  
   const handleNext = () => { // This function is used to handle the next button click.
     if (step < questions.length - 1) {
       setStep(step + 1); // This is used to increment the step to move to the next question.
