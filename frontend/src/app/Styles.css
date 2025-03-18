@@ -1,0 +1,9 @@
+@import  "tailwindcss";
+ 
+
+.CgreenText{
+   @apply text-[#1B4D3E]
+}
+.CgreenBg{
+    @apply bg-[#1B4D3E]
+}
