@@ -1,5 +1,9 @@
-import React from "react";
+import DietAssistant from "@/components/DietAssistant";
 
-export default function page(){
-    return(<></>)
+export default function DietAssistantPage() {
+  return (
+    <div>
+      <DietAssistant />
+    </div>
+  );
 }
