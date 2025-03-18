@@ -2,12 +2,12 @@ import { useState } from "react";
 
 // Questions to be displayed to help personalize their search results 
 const questions = [
-  { id: 1, question: "Enter a location", options: ["location"] },
-  { id: 2, question: "Choose the physician's specialty", type: "dropdown", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
-  { id: 3, question: "Select the gender of the physician", type: "radio", options: ["Male", "Female", "Any"] },
-  { id: 4, question: "What is your availability range", type: "dropdown", options: ["Morning", "Afternoon", "Evening"] },
-  { id: 5, question: "Virtual service or In-person", type: "radio", options: ["Virtual", "In-person"] },
-  { id: 6, question: "Preferred language", options: ["location"] },
+  { id: 1, question: "Let's find your compatible doctor.", description: "Enter your address and we'll find you a great doctor nearby.", options: ["Enter a location"]},
+  { id: 2, question: "I am looking for a doctor specialized in...", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
+  { id: 3, question: "I am more comfortable seeing a...",  options: ["Male doctor", "Female doctor", "No Preference"] },
+  { id: 4, question: "When is the best time of day for your visit?", description: "Choose all of the times that work for you.", options: ["Morning", "Afternoon", "Evening"] },
+  { id: 5, question: "What type of service works best with your schedule?", options: ["Virtual", "In-person"] },
+  { id: 6, question: "Preferred language", options: ["English"] },
 ];
 
 const Questionnaire = () => {
@@ -33,17 +33,21 @@ const Questionnaire = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
+
+      {/* Question and options */}
       <h2 className="text-2xl font-semibold">{questions[currentQ].question}</h2>
+      <p className="text-sm p-2 text-gray-500">{questions[currentQ].description}</p>
       <div className="mt-4">
         {questions[currentQ].options.map((option) => (
           <button
             key={option}
-            className="px-4 py-2 m-2 border rounded bg-gray-200 hover:bg-gray-300"
-          >
+            className="px-4 py-4 my-4 mx-1 border shadow-xs border-gray-200 rounded-xl bg-white hover:border-[#355D47]">
             {option}
           </button>
         ))}
       </div>
+
+      {/* Navigation buttons */}
       <div className="mt-4 flex gap-2">
         {currentQ > 0 && (
           <button onClick={handlePrev} className="px-4 py-2 bg-gray-400 text-white rounded">
@@ -58,6 +62,7 @@ const Questionnaire = () => {
         submit
       </button>}
       </div>
+
     </div>
   );
 
