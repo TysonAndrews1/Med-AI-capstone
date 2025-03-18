@@ -6,7 +6,6 @@ const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
 export const getGeminiResponse = async (userInput) => {
     try {
-        console.log("Using API Key:", API_KEY);
 
         const response = await fetch("http://localhost:8080/api/gemini", {
             method: "POST",

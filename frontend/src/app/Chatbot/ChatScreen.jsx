@@ -18,7 +18,7 @@ const ChatScreen = () => {
     // References for scrolling functionality
     const messagesEndRef = useRef(null);
     const chatContainerRef = useRef(null);
-    const router = useRouter(); // ✅ Use Next.js router for navigation
+    const router = useRouter(); // Use Next.js router for navigation
 
     // Scroll to the bottom whenever new messages are added
     const scrollToBottom = () => {
