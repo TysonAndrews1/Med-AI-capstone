@@ -70,7 +70,7 @@ export default function DietAssistant() {
       setStep(step + 1); // This is used to increment the step to move to the next question.
     } else {
       console.log("User responses:", answers);
-
+  
       const userProfile = {
         Health_Goals: answers[1]?.join(", ") || "Not specified",
         Dietary_Restrictions: answers[2]?.join(", ") || "None",
@@ -82,11 +82,11 @@ export default function DietAssistant() {
         Desired_Weight: answers[6]?.desiredWeight || "Not specified",
         Additional_Details: answers.extra || "None provided",
       };
-
-      const response = await getMealRecommendations(userProfile);
-      setAiRecommendation(response);
+  
+      const encodedData = encodeURIComponent(JSON.stringify(userProfile));
+      window.location.href = `/DietAssistantResults?data=${encodedData}`;
     }
-  };
+  };  
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100 p-10">
