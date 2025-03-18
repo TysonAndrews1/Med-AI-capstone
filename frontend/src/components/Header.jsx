@@ -9,7 +9,7 @@ export default function Header(){
             {/* <icon className="w-6 h-6" /> Adjust icon size as needed */}
             <div className="text-center">
               <p className="text-5xl font-semibold text-[#1B4D3E] ">MediHealth Ai</p>
-              <p className="text-xl text-[#1B4D3E]">Your #1 at Home Heath Companion</p>
+              <p className="text-xl text-[#1B4D3E]">Your #1 at Home Health Companion</p>
             </div>
           </div>
       
