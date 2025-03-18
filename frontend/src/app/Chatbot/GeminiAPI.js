@@ -3,33 +3,43 @@
  */
 
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateText?key=${API_KEY}`;
 
 export const getGeminiResponse = async (userInput) => {
     try {
-        console.log("Sending request to:", GEMINI_API_URL); 
+        console.log("Using API Key:", API_KEY);
 
-        const response = await fetch(GEMINI_API_URL, {
+        const response = await fetch("http://localhost:8080/api/gemini", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                prompt: { text: userInput },
+                apiKey: API_KEY,
+                userInput: userInput ,
             }),
         });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.statusText}`);
+        }
 
         const data = await response.json();
         console.log("API Response:", data); 
 
-        if (data && data.candidates && data.candidates.length > 0) {
-            return data.candidates[0].output;
-        } else {
-            return "Sorry, I can't receive responses.";
-        }
+         // Extract AI response text properly
+         let messageText = "Sorry, I couldn't understand that.";
+         if (data && data.candidates && data.candidates.length > 0) {
+             messageText = data.candidates[0].content.parts[0].text; // Extract message correctly
+         }
+
+        // Check if response suggests using Health Assessment
+        const containsHealthAssessmentPrompt = messageText.toLowerCase().includes("health assessment");
+
+        return { message: messageText, showAssessmentButton: containsHealthAssessmentPrompt };
+
 
     } catch (error) {
         console.error("Gemini API Error:", error);
-        return "Error, Please try again.";
+        return { message: "Error, Please try again.", showAssessmentButton: false };
     }
 };
