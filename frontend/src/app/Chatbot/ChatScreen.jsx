@@ -3,14 +3,32 @@
  */
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getGeminiResponse } from "./GeminiAPI";
 
 const ChatScreen = () => {
     const [messages, setMessages] = useState([
-        { sender: "bot", text: "Hello! How can I help you?" },
+        { sender: "bot", text: "Hello! How can I assist you?" },
     ]);
     const [input, setInput] = useState("");
+
+    // Reference message container
+    const messagesEndRef = useRef(null);
+
+    const chatContainerRef = useRef(null);
+
+    const scrollToBottom = () => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTo({
+                top: chatContainerRef.current.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    };
+    
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]); // ✅ 메시지가 변경될 때만 실행
 
     const sendMessage = async () => {
         if (!input.trim()) return;
@@ -36,23 +54,25 @@ const ChatScreen = () => {
     };
 
     return (
-        <div className="w-[calc(100vw-10rem)] mt-8 h-[calc(100vh-7rem)] flex items-center justify-center bg-gray-100">
-            <div className="w-[90vw] h-[90vh] flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden">
-                <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+        <div className="w-[calc(100vw-10rem)] h-[calc(100vh-7rem)] flex items-center justify-center bg-gray-100">
+            <div className="w-[90vw] h-[80vh] flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div className="flex-1 max-h-[65vh] overflow-y-auto p-6 space-y-4 bg-gray-50" ref={chatContainerRef}>
                     {messages.map((msg, index) => (
-                        <div key={index} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+                        <div key={index} className={`flex items-center ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                             {msg.sender === "bot" && (
-                                <img src="/bot-avatar.png" alt="Bot" className="w-10 h-10 rounded-full mr-2" />
+                                <img src="/chatbot_avatar.png" alt="Bot" className="w-15 h-15 rounded-full mr-2" />
                             )}
                             <div className={`p-3 rounded-lg ${msg.sender === "user" ? "bg-[#1B4D3E] text-white" : "bg-gray-300 text-black"}`}>
                                 {msg.text}
                             </div>
                             {msg.sender === "user" && (
-                                <img src="/user-avatar.png" alt="User" className="w-10 h-10 rounded-full ml-2" />
+                                <img src="/user_avatar.png" alt="User" className="w-15 h-15 rounded-full ml-2" />
                             )}
                         </div>
                     ))}
+                    <div ref={messagesEndRef} />
                 </div>
+
                 <div className="p-4 bg-white flex items-center border-t">
                     <input
                         type="text"

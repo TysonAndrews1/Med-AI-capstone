@@ -7,7 +7,7 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemi
 
 export const getGeminiResponse = async (userInput) => {
     try {
-        console.log("Sending request to:", GEMINI_API_URL); // ✅ API URL 확인
+        console.log("Sending request to:", GEMINI_API_URL); 
 
         const response = await fetch(GEMINI_API_URL, {
             method: "POST",
@@ -20,7 +20,7 @@ export const getGeminiResponse = async (userInput) => {
         });
 
         const data = await response.json();
-        console.log("API Response:", data); // ✅ 응답 확인
+        console.log("API Response:", data); 
 
         if (data && data.candidates && data.candidates.length > 0) {
             return data.candidates[0].output;
