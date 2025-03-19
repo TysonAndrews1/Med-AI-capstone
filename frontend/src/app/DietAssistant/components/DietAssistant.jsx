@@ -4,7 +4,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { getMealRecommendations } from "../utils/openai"; // Import OpenAI API function
+import { getMealRecommendations } from "../../../utils/openai"; // Import OpenAI API function
 
 const questions = [
   {
