@@ -5,7 +5,12 @@ import {getDrugId} from "./BackendMethods"
 import MedicineForm from "./MedicinePreForm";
 import EmailForm from "./EmailForm";
 
+// for (let index = 0;index < array.length; index++) {
+    
+// }
+
 export default function page(){
+
     const medicineCode = "00000086"; //Testing only
     const [request, setRequest] = useState("")
     const [pageState, setPageState] = useState("")
