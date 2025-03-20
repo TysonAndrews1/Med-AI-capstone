@@ -12,13 +12,16 @@ const questions = [
 
 const Questionnaire = () => {
   const [currentQ, setCurrentQ] = useState(0);
+  
 
+  // Function to handle the next question 
   const handleNext = () => {
     if (currentQ < questions.length - 1) {
       setCurrentQ(currentQ + 1);
     }
   };
 
+  // Function to handle the previous question
   const handlePrev = () => {
     if (currentQ > 0) {
       setCurrentQ(currentQ - 1);
@@ -32,7 +35,16 @@ const Questionnaire = () => {
 
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center p-4 w-full max-w-2xl mx-auto">
+
+      {/* Reference: ChatGPT Prompt: "Please create a dynamic progress bar" */}
+      {/* Progress Bar */}
+      <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6 mx-auto">
+        <div 
+          className="bg-[#355D47] h-2.5 rounded-full" 
+          style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
+        ></div>
+      </div>
 
       {/* Question and options */}
       <h2 className="text-2xl font-semibold">{questions[currentQ].question}</h2>
