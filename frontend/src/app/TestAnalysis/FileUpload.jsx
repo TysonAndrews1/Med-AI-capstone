@@ -8,24 +8,28 @@ const FileUpload = () => {
     const [response, setResponse] = useState(null);
     const [error, setError] = useState(null);
 
+    // Lets the user uploads a PDF file with a max capacity of 10MB
     const pickFile = async (event) => {
         const selectedFile = event.target.files[0];
         
         if (!selectedFile) return;
-    
+        
+        // Makes sure the file is a PDF
         if (selectedFile.type !== "application/pdf") {
             alert("Please upload a PDF file.");
             return;
         }
     
-        if (selectedFile.size > 10 * 1024 * 1024) { // Limit to 10MB
+        // Makes sure the file is smaller than 10MB
+        if (selectedFile.size > 10 * 1024 * 1024) {
             alert("File is too large. Please upload a smaller file.");
             return;
         }
     
         setFile(selectedFile);
-    };    
+    };
 
+    // Sends uploaded PDF to the backend springboot server
     const handleFileUpload = async () => {
         if (!file) {
             alert("Please select a file first.");
@@ -36,8 +40,10 @@ const FileUpload = () => {
         formData.append("file", file);
     
         setIsUploading(true);
+        setError(null); // Reset previous error
+        
         try {
-            const response = await fetch("/api/ai/analyze", {
+            const response = await fetch("http://localhost:8080/api/ai/analyze", {
                 method: "POST",
                 body: formData,
             });
@@ -46,8 +52,9 @@ const FileUpload = () => {
                 throw new Error("File upload failed");
             }
     
-            const responseData = await response.json();
+            const responseData = await response.text();
             console.log("File analysis response:", responseData);
+
             setResponse(responseData); // Save the response for display
         } catch (error) {
             console.error("Error during file upload:", error);
@@ -77,7 +84,12 @@ const FileUpload = () => {
                 {isUploading ? "Uploading..." : "Upload File"}
             </button>
             {error && <p className="mt-3 text-red-500">{error}</p>}
-            {response && <p className="mt-3 text-green-500">AI Analysis Result: {response}</p>}
+            {response && (
+                <div className="mt-3 text-green-500">
+                    <h3>AI Analysis Result:</h3>
+                    <pre className="whitespace-pre-wrap">{response}</pre>
+                </div>
+            )}
         </div>
     );
 };
