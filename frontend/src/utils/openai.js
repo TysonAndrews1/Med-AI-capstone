@@ -1,17 +1,19 @@
 import OpenAI from "openai";
 
-// DO NOT initialize OpenAI globally if running in Next.js API routes
 export async function getMealRecommendations(userInputs) {
   try {
-    // Initialize OpenAI inside the function, not globally
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error("Missing OpenAI API key.");
+    }
+
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY, // Ensure API key is read only on the server
+      apiKey: process.env.OPENAI_API_KEY,
     });
 
     const prompt = `Based on the user's inputs: ${JSON.stringify(userInputs)}, suggest meal plans or dietary recommendations.`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
     });
 
