@@ -36,4 +36,28 @@ export async function sendEmail (emailObject){
         console.error("Sorry the email has failed to send", error);
         return { message: "Error, Please try again.", showAssessmentButton: false };
     }
+
+}
+
+export async function UnsubscribeFromEmails (email){
+    try{
+        const response = await fetch ("http://localhost:8080/email/unsubscribe" ,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(email)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.statusText}`);
+        
+        }
+        console.log(response);
+        
+        
+    }catch (error) {
+        console.error("Sorry the email has failed to send", error);
+        return { message: "Error, Please try again.", showAssessmentButton: false };
+    }
 }

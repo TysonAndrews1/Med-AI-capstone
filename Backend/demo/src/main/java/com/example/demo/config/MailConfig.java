@@ -26,9 +26,9 @@ public class MailConfig {
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.timeout", "10000"); // Increase the connection timeout (in ms)
-        props.put("mail.smtp.connectiontimeout", "10000"); // Increase connection timeout
-        props.put("mail.smtp.writetimeout", "10000"); // Increase write timeout
+        props.put("mail.smtp.timeout", "60000"); // Increase the connection timeout (in ms)
+        props.put("mail.smtp.connectiontimeout", "60000"); // Increase connection timeout
+        props.put("mail.smtp.writetimeout", "60000"); // Increase write timeout
 
         return mailSender;
     }

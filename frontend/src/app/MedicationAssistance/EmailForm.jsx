@@ -2,19 +2,22 @@ import MultiTimePicker from "@/components/MultiTimePicker";
 import React, { useState } from "react";
 import { sendEmail } from "./BackendMethods";
 
+
+//the Form that collects the information nessasry to set reoccuring emails and send the proper information to the BackendMethods
 export default function EmailForm() {
   const [contactType, setContactType] = useState("email");
   const [formData, setFormData] = useState({
     email: "",
     emailContent: "",
     reminderInterval: "",
-    phone: "" // Added for phone number input
+    phone: "" 
   });
 
+  //takes in a key value pair
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  //sends info to backend
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent form from reloading the page
 

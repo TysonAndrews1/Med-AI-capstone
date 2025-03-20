@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.EmailRequest;
 
 @Service
-
 public class EmailService {
 
     @Autowired
@@ -27,12 +26,11 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         // Set up the email fields
-        helper.setFrom("medihealthai0110@gmail.com"); // Your email
+        helper.setFrom("medihealthai0110@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
-        helper.setText(messageContent, true); // Set the message content, 'true' enables HTML
+        helper.setText(messageContent, true);
 
-        // Send the email
         mailSender.send(message);
     }
 
