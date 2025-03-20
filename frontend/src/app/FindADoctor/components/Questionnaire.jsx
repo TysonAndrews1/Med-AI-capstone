@@ -2,11 +2,41 @@ import { useState } from "react";
 
 // List of questions to help users find doctors
 const questions = [
-  { id: 1, question: "I am looking for a doctor specialized in...", type: "select", field: "specialty", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
-  { id: 2, question: "I am more comfortable seeing a...", type: "select", field: "gender", options: ["Male", "Female", "No Preference"] },
-  { id: 3, question: "When is the best time for your visit?", type: "select", field: "timeOfDay", options: ["Morning", "Afternoon", "Evening"] },
-  { id: 4, question: "What type of service works best with your schedule?", type: "select", field: "serviceType", options: ["Virtual", "In-person"] },
-  { id: 5, question: "Preferred language", type: "select", field: "language", options: ["English", "Spanish", "Mandarin", "French", "Other"] },
+  {
+    id: 1,
+    question: "I am looking for a doctor specialized in...",
+    type: "select",
+    field: "specialty",
+    options: ["General", "Pediatrics", "Dermatology", "Cardiology"],
+  },
+  {
+    id: 2,
+    question: "I am more comfortable seeing a...",
+    type: "select",
+    field: "gender",
+    options: ["Male", "Female", "No Preference"],
+  },
+  {
+    id: 3,
+    question: "When is the best time for your visit?",
+    type: "select",
+    field: "timeOfDay",
+    options: ["Morning", "Afternoon", "Evening"],
+  },
+  {
+    id: 4,
+    question: "What type of service works best with your schedule?",
+    type: "select",
+    field: "serviceType",
+    options: ["Virtual", "In-person"],
+  },
+  {
+    id: 5,
+    question: "Preferred language",
+    type: "select",
+    field: "language",
+    options: ["English", "Spanish", "Mandarin", "French", "Other"],
+  },
 ];
 
 const Questionnaire = () => {
@@ -16,7 +46,7 @@ const Questionnaire = () => {
     gender: "",
     timeOfDay: "",
     serviceType: "",
-    language: ""
+    language: "",
   });
   const [doctorResults, setDoctorResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
@@ -26,7 +56,7 @@ const Questionnaire = () => {
     // Update the answers object with the selected option
     setAnswers({
       ...answers,
-      [field]: option
+      [field]: option,
     });
   };
 
@@ -59,7 +89,7 @@ const Questionnaire = () => {
         availability: ["Morning", "Afternoon"],
         serviceTypes: ["In-person", "Virtual"],
         rating: 4.8,
-        image: "/api/placeholder/100/100"
+        image: "/api/placeholder/100/100",
       },
       {
         id: 2,
@@ -72,7 +102,7 @@ const Questionnaire = () => {
         availability: ["Afternoon", "Evening"],
         serviceTypes: ["In-person"],
         rating: 4.9,
-        image: "/api/placeholder/100/100"
+        image: "/api/placeholder/100/100",
       },
       {
         id: 3,
@@ -85,43 +115,43 @@ const Questionnaire = () => {
         availability: ["Morning", "Evening"],
         serviceTypes: ["Virtual", "In-person"],
         rating: 4.7,
-        image: "/api/placeholder/100/100"
-      }
+        image: "/api/placeholder/100/100",
+      },
     ];
-    
+
     // ChatGPT Prompt: "I am unable to get my filters to work correctly. Can you help me fix them?"
     // Filter doctors based on user selections
-    const matchingDoctors = sampleDoctors.filter(doctor => {
+    const matchingDoctors = sampleDoctors.filter((doctor) => {
       let isMatch = true;
-      
+
       // Check if specialty matches
       if (answers.specialty && answers.specialty !== "General") {
         isMatch = isMatch && doctor.specialty === answers.specialty;
       }
-      
+
       // Check if gender preference matches
       if (answers.gender && answers.gender !== "No Preference") {
         isMatch = isMatch && doctor.gender === answers.gender;
       }
-      
+
       // Check if service type matches
       if (answers.serviceType) {
         isMatch = isMatch && doctor.serviceTypes.includes(answers.serviceType);
       }
-      
+
       // Check if time of day matches
       if (answers.timeOfDay) {
         isMatch = isMatch && doctor.availability.includes(answers.timeOfDay);
       }
-      
+
       // Check if language matches
       if (answers.language && answers.language !== "Other") {
         isMatch = isMatch && doctor.languages.includes(answers.language);
       }
-      
+
       return isMatch;
     });
-    
+
     // Save the results and show them
     setDoctorResults(matchingDoctors);
     setShowResults(true);
@@ -134,14 +164,16 @@ const Questionnaire = () => {
           {/* Reference: ChatGPT Prompt: "Please create a dynamic progress bar" */}
           {/* Progress bar */}
           <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
-            <div 
-              className="bg-[#355D47] h-2.5 rounded-full" 
+            <div
+              className="bg-[#355D47] h-2.5 rounded-full"
               style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
             ></div>
           </div>
 
           {/* Question text */}
-          <h2 className="text-2xl font-semibold text-center">{questions[currentQ].question}</h2>
+          <h2 className="text-2xl font-semibold text-center">
+            {questions[currentQ].question}
+          </h2>
 
           {/* ChatGPT Prompt: "Please help implement the handleSelect function to auto advance" */}
           {/* Answer options */}
@@ -172,27 +204,27 @@ const Questionnaire = () => {
           {/* Navigation buttons */}
           <div className="mt-4 flex gap-2 w-full">
             {currentQ > 0 && (
-              <button 
-                onClick={handlePrev} 
+              <button
+                onClick={handlePrev}
                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded flex-1"
               >
                 Previous
               </button>
             )}
-            
+
             {currentQ < questions.length - 1 && (
-              <button 
-                onClick={handleNext} 
+              <button
+                onClick={handleNext}
                 className="px-4 py-2 bg-[#1B4D3E] text-white rounded flex-1"
                 disabled={!answers[questions[currentQ].field]}
               >
                 Next
               </button>
             )}
-            
+
             {currentQ === questions.length - 1 && (
-              <button 
-                onClick={findDoctors} 
+              <button
+                onClick={findDoctors}
                 className="px-4 py-2 bg-[#1B4D3E] text-white rounded flex-1"
               >
                 Find Doctors
@@ -202,8 +234,10 @@ const Questionnaire = () => {
         </>
       ) : (
         <div className="w-full">
-          <h2 className="text-2xl font-semibold mb-6">Your Compatible Doctors</h2>
-          
+          <h2 className="text-2xl font-semibold mb-6">
+            Your Compatible Doctors
+          </h2>
+
           {doctorResults.length > 0 ? (
             <div>
               {doctorResults.map((doctor) => (
@@ -211,7 +245,9 @@ const Questionnaire = () => {
                   <h3>{doctor.name}</h3>
                   <p>Specialty: {doctor.specialty}</p>
                   <p>Gender: {doctor.gender}</p>
-                  <p>Location: {doctor.location} ({doctor.distance})</p>
+                  <p>
+                    Location: {doctor.location} ({doctor.distance})
+                  </p>
                   <p>Rating: {doctor.rating}</p>
                   <p>Languages: {doctor.languages.join(", ")}</p>
                   <p>Availability: {doctor.availability.join(", ")}</p>
@@ -229,5 +265,5 @@ const Questionnaire = () => {
     </div>
   );
 };
-  
+
 export default Questionnaire;
