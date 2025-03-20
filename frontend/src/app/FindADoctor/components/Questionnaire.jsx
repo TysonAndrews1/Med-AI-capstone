@@ -3,7 +3,7 @@ import { useState } from "react";
 // List of questions to help users find doctors
 const questions = [
   { id: 1, question: "I am looking for a doctor specialized in...", type: "select", field: "specialty", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
-  { id: 2, question: "I am more comfortable seeing a...", type: "select", field: "gender", options: ["Male doctor", "Female doctor", "No Preference"] },
+  { id: 2, question: "I am more comfortable seeing a...", type: "select", field: "gender", options: ["Male", "Female", "No Preference"] },
   { id: 3, question: "When is the best time for your visit?", type: "select", field: "timeOfDay", options: ["Morning", "Afternoon", "Evening"] },
   { id: 4, question: "What type of service works best with your schedule?", type: "select", field: "serviceType", options: ["Virtual", "In-person"] },
   { id: 5, question: "Preferred language", type: "select", field: "language", options: ["English", "Spanish", "Mandarin", "French", "Other"] },
@@ -101,8 +101,7 @@ const Questionnaire = () => {
       
       // Check if gender preference matches
       if (answers.gender && answers.gender !== "No Preference") {
-        const preferredGender = answers.gender.split(" ")[0]; // Extract just "Male" or "Female"
-        isMatch = isMatch && doctor.gender === preferredGender;
+        isMatch = isMatch && doctor.gender === answers.gender;
       }
       
       // Check if service type matches
@@ -128,7 +127,6 @@ const Questionnaire = () => {
     setShowResults(true);
   };
 
-  // Main component render
   return (
     <div className="flex flex-col items-center justify-center p-4 w-full max-w-2xl mx-auto">
       {!showResults ? (
