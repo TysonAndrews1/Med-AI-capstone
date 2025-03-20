@@ -1,9 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 
-export default function ResultsPage() {
+function ResultsComponent() {
   const searchParams = useSearchParams();
   const [aiRecommendation, setAiRecommendation] = useState("Loading recommendations...");
 
@@ -38,5 +38,13 @@ export default function ResultsPage() {
         <p className="text-gray-700 whitespace-pre-line">{aiRecommendation}</p>
       </div>
     </div>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div>Loading results...</div>}>
+      <ResultsComponent />
+    </Suspense>
   );
 }
