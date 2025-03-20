@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.EmailRequest;
+
 @Service
 
 public class EmailService {
@@ -14,15 +16,23 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendEmail(String to, String subject, String text) throws MessagingException {
+    public void sendEmail(EmailRequest emailRequest) throws MessagingException {
+        String to = emailRequest.getTo();
+        String subject = emailRequest.getSubject();
+        String messageContent = emailRequest.getText();
+        // Create a new MimeMessage
         MimeMessage message = mailSender.createMimeMessage();
+
+        // Use MimeMessageHelper to set up the message
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setFrom("medihealthai0110@gmail.com");
+        // Set up the email fields
+        helper.setFrom("medihealthai0110@gmail.com"); // Your email
         helper.setTo(to);
         helper.setSubject(subject);
-        helper.setText(text, true); // true enables HTML content
+        helper.setText(messageContent, true); // Set the message content, 'true' enables HTML
 
+        // Send the email
         mailSender.send(message);
     }
 

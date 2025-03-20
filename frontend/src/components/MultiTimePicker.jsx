@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function MultiTimePicker() {
+export default function MultiTimePicker({onTimeChange}) {
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -13,9 +13,14 @@ export default function MultiTimePicker() {
 
   // Handle time selection
   const toggleTimeSelection = (time) => {
-    setSelectedTimes((prev) =>
-      prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
-    );
+    let updatedTimes;
+    if (selectedTimes.includes(time)) {
+      updatedTimes = selectedTimes.filter((t) => t !== time);
+    } else {
+      updatedTimes = [...selectedTimes, time];
+    }
+    setSelectedTimes(updatedTimes);
+    onTimeChange(updatedTimes); // Send data to parent
   };
 
   return (
@@ -32,7 +37,7 @@ export default function MultiTimePicker() {
             {selectedTimes.map((time) => (
               <span
                 key={time}
-                className="bg-green-500 text-white px-2 py-1 rounded-md text-sm flex items-center"
+                className="CgreenBg text-white px-2 py-1 rounded-md text-sm flex items-center"
               >
                 {time}
                 <button

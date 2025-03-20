@@ -22,13 +22,14 @@ export async function sendEmail (emailObject){
             headers: {
                 "Content-Type": "application/json",
             },
-            body: emailObject
+            body: JSON.stringify(emailObject)
         });
 
         if (!response.ok) {
             throw new Error(`Server error: ${response.statusText}`);
         
         }
+        console.log(response);
         
         
     }catch (error) {
