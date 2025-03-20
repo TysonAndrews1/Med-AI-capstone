@@ -11,14 +11,14 @@ export default function MainLayout({ children }) {
     const hideFooter = ["/directoryHere", "/additional if needed"]; 
     const hideSidebar = ["/directoryHere", "/additional if needed"]; 
   
-    return (
-        <div>
-          {!hideHeader.includes(pathname) && <Header />}
-          <div className="flex flex-row">
-            {!hideSidebar.includes(pathname) &&<Navbar />}
-            {children}
+      return (
+          <div>
+            {!hideHeader.includes(pathname) && <Header />}
+            <div className="flex flex-row">
+              {!hideSidebar.includes(pathname) &&<Navbar />}
+              {children}
+            </div>
+            {!hideFooter.includes(pathname) && <Footer />}
           </div>
-          {!hideFooter.includes(pathname) && <Footer />}
-        </div>
-    );
+      );
   }

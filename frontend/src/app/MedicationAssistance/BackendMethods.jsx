@@ -13,3 +13,26 @@ export async function getDrugId (drugId) {
             return null; 
         };
 }
+
+
+export async function sendEmail (emailObject){
+    try{
+        const response = await fetch ("http://localhost:8080/email/send" ,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: emailObject
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.statusText}`);
+        
+        }
+        
+        
+    }catch (error) {
+        console.error("Sorry the email has failed to send", error);
+        return { message: "Error, Please try again.", showAssessmentButton: false };
+    }
+}
