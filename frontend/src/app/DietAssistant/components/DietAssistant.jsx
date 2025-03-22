@@ -1,5 +1,5 @@
 // Reference: https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety
-// This reference was used to learn how to store API keys securely in a Next.js app instead of the frontend.
+// This reference was used to learn how to store API keys securely in a Next.js app instead of the frontend. I got help from this reference for the initial build, but I have changed the API to Gemini instead.
 
 "use client";
 

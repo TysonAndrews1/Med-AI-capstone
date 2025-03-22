@@ -14,7 +14,7 @@ function ResultsComponent() {
       try {
         const userInputs = JSON.parse(searchParams.get("data") || "{}");
 
-        const response = await fetch("/api/openai", {
+        const response = await fetch("/api/gemini-diet", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userInputs }),
