@@ -1,17 +1,20 @@
 import { useState } from "react";
+import GoogleMap from "./GoogleMap";
 
 // List of questions to help users find doctors
 const questions = [
-  { id: 1, question: "I am looking for a doctor specialized in...", type: "select", field: "specialty", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
-  { id: 2, question: "I am more comfortable seeing a...", type: "select", field: "gender", options: ["Male", "Female", "No Preference"] },
-  { id: 3, question: "When is the best time for your visit?", type: "select", field: "timeOfDay", options: ["Morning", "Afternoon", "Evening"] },
-  { id: 4, question: "What type of service works best with your schedule?", type: "select", field: "serviceType", options: ["Virtual", "In-person"] },
-  { id: 5, question: "Preferred language", type: "select", field: "language", options: ["English", "Spanish", "Mandarin", "French", "Other"] },
+  //{ id: 1, question: "Let's find you the most compatible doctor.", description: "Enter your address and we'll find you a great doctor nearby.", type: "select", field: "location", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
+  { id: 2, question: "I am looking for a doctor specialized in...", type: "select", field: "specialty", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
+  { id: 3, question: "I am more comfortable seeing a...", type: "select", field: "gender", options: ["Male", "Female", "No Preference"] },
+  { id: 4, question: "When is the best time for your visit?", type: "select", field: "timeOfDay", options: ["Morning", "Afternoon", "Evening"] },
+  { id: 5, question: "What type of service works best with your schedule?", type: "select", field: "serviceType", options: ["Virtual", "In-person"] },
+  { id: 6, question: "Preferred language", type: "select", field: "language", options: ["English", "Spanish", "Mandarin", "French", "Other"] },
 ];
 
 const Questionnaire = () => {
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({
+    location: "",
     specialty: "",
     gender: "",
     timeOfDay: "",
@@ -20,6 +23,7 @@ const Questionnaire = () => {
   });
   const [doctorResults, setDoctorResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   // Function to handle selecting an option
   const handleSelect = (option, field) => {
@@ -54,6 +58,7 @@ const Questionnaire = () => {
         specialty: "Pediatrics",
         gender: "Female",
         location: "123 Medical Center Dr",
+        coordinates: {lat: 51.0501, lng: -114.0853 },
         distance: "2.4 miles",
         languages: ["English", "Spanish"],
         availability: ["Morning", "Afternoon"],
@@ -67,6 +72,7 @@ const Questionnaire = () => {
         specialty: "Cardiology",
         gender: "Male",
         location: "456 Heart Health Blvd",
+        coordinates: { lat: 51.045, lng: -114.0708 },
         distance: "3.7 miles",
         languages: ["English", "Mandarin"],
         availability: ["Afternoon", "Evening"],
@@ -80,6 +86,7 @@ const Questionnaire = () => {
         specialty: "Dermatology",
         gender: "Female",
         location: "789 Skin Care Ave",
+        coordinates: { lat: 51.048, lng: -114.066 },
         distance: "5.1 miles",
         languages: ["English", "Spanish"],
         availability: ["Morning", "Evening"],
@@ -125,6 +132,7 @@ const Questionnaire = () => {
     // Save the results and show them
     setDoctorResults(matchingDoctors);
     setShowResults(true);
+    setShowMap(true);
   };
 
   return (
@@ -218,7 +226,9 @@ const Questionnaire = () => {
                   <p>Services: {doctor.serviceTypes.join(", ")}</p>
                 </div>
               ))}
+              {showMap && <GoogleMap doctors={doctorResults} />}
             </div>
+            
           ) : (
             <div>
               <p>No doctors match your criteria.</p>

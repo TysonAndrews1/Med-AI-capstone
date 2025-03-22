@@ -1,7 +1,6 @@
 "use client";
 import { React, useState } from "react";
 import Questionnaire from "./components/Questionnaire";
-import GoogleMap from "./components/GoogleMap";
 
 export default function Page() {
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
@@ -27,9 +26,6 @@ export default function Page() {
         </div>
       )}
 
-      <div>
-        <GoogleMap />
-      </div>
     </div>
   );
 }
