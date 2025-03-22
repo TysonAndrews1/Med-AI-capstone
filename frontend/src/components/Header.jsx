@@ -1,6 +1,16 @@
+"use client"
+
 import React from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function Header(){
+
+    const router = useRouter();
+
+    const handleAssessmentStart = () => {
+      router.push('/HealthAssessment');
+    }
 
     return (
         <div className="flex justify-between items-center p-4  rounded-lg shadow-md w-full h-[18%]">
@@ -14,7 +24,8 @@ export default function Header(){
           </div>
       
           {/* Button - Right Aligned */}
-          <button className="flex items-center space-x-2 px-4 py-2 bg-[#1B4D3E] text-white rounded-lg hover:">
+          <button className="flex items-center space-x-2 px-4 py-2 bg-[#1B4D3E] text-white rounded-lg hover:"
+          onClick={handleAssessmentStart}>
             <p>Start Health Assessment</p>
             {/* <icon className="w-5 h-5" /> */}
           </button>
