@@ -14,7 +14,9 @@ const Results = ({ doctors }) => {
                 <h3 className="text-lg font-bold">{doctor.name}</h3>
                 <p>Specialty: {doctor.specialty}</p>
                 <p>Gender: {doctor.gender}</p>
-                <p>Location: {doctor.location} ({doctor.distance})</p>
+                <p>
+                  Location: {doctor.location} ({doctor.distance})
+                </p>
                 <p>Rating: {doctor.rating}</p>
                 <p>Languages: {doctor.languages.join(", ")}</p>
                 <p>Availability: {doctor.availability.join(", ")}</p>
@@ -28,8 +30,10 @@ const Results = ({ doctors }) => {
       </div>
 
       {/* Map Section */}
-      <div className="flex-1 h-full sticky top-0">
-        <GoogleMap doctors={doctors} />
+      <div className="w-[500px] h-[500px] p-4">
+        <div className="w-full h-full rounded-lg overflow-hidden shadow">
+          <GoogleMap doctors={doctors} />
+        </div>
       </div>
     </div>
   );
