@@ -2,11 +2,14 @@
 import { React, useState } from "react";
 import Questionnaire from "./components/Questionnaire";
 
+
 export default function Page() {
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  console.log("TEST VAR:", process.env.NEXT_PUBLIC_TEST_VAR); 
 
   return (
     <div className="text-center px-20 py-10">
+
       {showQuestionnaire ? (
         <Questionnaire />
       ) : (
@@ -25,6 +28,7 @@ export default function Page() {
           </button>
         </div>
       )}
+
 
     </div>
   );

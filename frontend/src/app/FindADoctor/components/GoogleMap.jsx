@@ -23,16 +23,18 @@ function GoogleMap({ doctors }) {
     process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
   );
 
+
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
       <div style={{ height: "100vh", width: "100%" }}>
         <Map
           zoom={16}
           center={defaultCenter}
-          mapId={process.env.NEXT_PUBLIC_MAP_ID}
+          mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID}
           gestureHandling="greedy"
           disableDefaultUI={false}
         >
+
           {doctors.map((doctor) => (
             <AdvancedMarker
               key={doctor.id}
