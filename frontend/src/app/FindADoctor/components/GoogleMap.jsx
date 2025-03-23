@@ -28,7 +28,7 @@ function GoogleMap({ doctors }) {
 
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-      <div style={{ height: "100vh", width: "100%", position: "relative", zIndex: 1 }}>
+      <div style={{ height: "100%", width: "100%", position: "relative", zIndex: 1 }}>
         <Map
           zoom={16}
           center={defaultCenter}

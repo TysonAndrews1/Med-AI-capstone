@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GoogleMap from "./GoogleMap";
 import LocationQ from "./LocationQ";
+import Results from "./Results";
 
 // List of questions to help users find doctors
 const questions = [
@@ -53,8 +54,7 @@ const Questionnaire = () => {
   });
   const [doctorResults, setDoctorResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
-  const [showMap, setShowMap] = useState(false);
-  const [location, setLocation] = useState(false);
+  
 
   // Function to handle selecting an option
   const handleSelect = (option, field) => {
@@ -163,13 +163,14 @@ const Questionnaire = () => {
     // Save the results and show them
     setDoctorResults(matchingDoctors);
     setShowResults(true);
-    setShowMap(true);
   };
 
-  return (
-    <div className="flex flex-col items-center justify-center p-4 w-full max-w-2xl mx-auto">
+  if(showResults){
+    return <Results doctors={doctorResults} />;
+  }
 
-      {/* Progress bar */}
+  return (
+    <div className="w-full h-screen">
       <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
         <div
           className="bg-[#355D47] h-2.5 rounded-full"
@@ -200,14 +201,12 @@ const Questionnaire = () => {
             Continue
           </button>
         </>
-      ) : !showResults ? (
+      ) : (
         <>
-          {/* Question */}
           <h2 className="text-2xl font-semibold text-center">
             {questions[currentQ].question}
           </h2>
 
-          {/* Answer options */}
           <div className="mt-4 w-full">
             <div className="grid grid-cols-1 gap-2 w-full">
               {questions[currentQ].options.map((option) => (
@@ -231,7 +230,6 @@ const Questionnaire = () => {
             </div>
           </div>
 
-          {/* Navigation buttons */}
           <div className="mt-4 flex gap-2 w-full">
             {currentQ > 0 && (
               <button
@@ -262,36 +260,6 @@ const Questionnaire = () => {
             )}
           </div>
         </>
-      ) : (
-        <div className="w-full">
-          <h2 className="text-2xl font-semibold mb-6">
-            Your Compatible Doctors
-          </h2>
-
-          {doctorResults.length > 0 ? (
-            <div>
-              {doctorResults.map((doctor) => (
-                <div key={doctor.id} className="mb-6">
-                  <h3>{doctor.name}</h3>
-                  <p>Specialty: {doctor.specialty}</p>
-                  <p>Gender: {doctor.gender}</p>
-                  <p>
-                    Location: {doctor.location} ({doctor.distance})
-                  </p>
-                  <p>Rating: {doctor.rating}</p>
-                  <p>Languages: {doctor.languages.join(", ")}</p>
-                  <p>Availability: {doctor.availability.join(", ")}</p>
-                  <p>Services: {doctor.serviceTypes.join(", ")}</p>
-                </div>
-              ))}
-              {showMap && <GoogleMap doctors={doctorResults} />}
-            </div>
-          ) : (
-            <div>
-              <p>No doctors match your criteria.</p>
-            </div>
-          )}
-        </div>
       )}
     </div>
   );

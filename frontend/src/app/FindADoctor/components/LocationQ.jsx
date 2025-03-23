@@ -1,6 +1,6 @@
 import AutocompleteWrapper from "./AutocompleteWrapper";
 
-const LocationStep = ({ onLocationSet }) => {
+const LocationQ = ({ onLocationSet }) => {
     return (
       <div className="flex flex-col items-center justify-center p-4 w-full max-w-2xl mx-auto">
         <h2 className="text-2xl font-semibold mb-4 text-center">
@@ -19,5 +19,5 @@ const LocationStep = ({ onLocationSet }) => {
     );
   };
   
-  export default LocationStep;
+  export default LocationQ;
   
