@@ -1,38 +1,67 @@
 import { useState } from "react";
 import GoogleMap from "./GoogleMap";
-import { APIProvider } from "@vis.gl/react-google-maps";
-import AutocompleteWrapper from "./AutocompleteWrapper";
+import LocationQ from "./LocationQ";
 
 // List of questions to help users find doctors
 const questions = [
-  //{ id: 1, question: "Let's find you the most compatible doctor.", description: "Enter your address and we'll find you a great doctor nearby.", type: "select", field: "location", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
-  { id: 2, question: "I am looking for a doctor specialized in...", type: "select", field: "specialty", options: ["General", "Pediatrics", "Dermatology", "Cardiology"] },
-  { id: 3, question: "I am more comfortable seeing a...", type: "select", field: "gender", options: ["Male", "Female", "No Preference"] },
-  { id: 4, question: "When is the best time for your visit?", type: "select", field: "timeOfDay", options: ["Morning", "Afternoon", "Evening"] },
-  { id: 5, question: "What type of service works best with your schedule?", type: "select", field: "serviceType", options: ["Virtual", "In-person"] },
-  { id: 6, question: "Preferred language", type: "select", field: "language", options: ["English", "Spanish", "Mandarin", "French", "Other"] },
+  {
+    id: 1,
+    question: "I am looking for a doctor specialized in...",
+    type: "select",
+    field: "specialty",
+    options: ["General", "Pediatrics", "Dermatology", "Cardiology"],
+  },
+  {
+    id: 2,
+    question: "I am more comfortable seeing a...",
+    type: "select",
+    field: "gender",
+    options: ["Male", "Female", "No Preference"],
+  },
+  {
+    id: 3,
+    question: "When is the best time for your visit?",
+    type: "select",
+    field: "timeOfDay",
+    options: ["Morning", "Afternoon", "Evening"],
+  },
+  {
+    id: 4,
+    question: "What type of service works best with your schedule?",
+    type: "select",
+    field: "serviceType",
+    options: ["Virtual", "In-person"],
+  },
+  {
+    id: 5,
+    question: "Preferred language",
+    type: "select",
+    field: "language",
+    options: ["English", "Spanish", "Mandarin", "French", "Other"],
+  },
 ];
 
 const Questionnaire = () => {
-  const [currentQ, setCurrentQ] = useState(0);
+  const [currentQ, setCurrentQ] = useState(null);
   const [answers, setAnswers] = useState({
     location: "",
     specialty: "",
     gender: "",
     timeOfDay: "",
     serviceType: "",
-    language: ""
+    language: "",
   });
   const [doctorResults, setDoctorResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [location, setLocation] = useState(false);
 
   // Function to handle selecting an option
   const handleSelect = (option, field) => {
     // Update the answers object with the selected option
     setAnswers({
       ...answers,
-      [field]: option
+      [field]: option,
     });
   };
 
@@ -60,13 +89,13 @@ const Questionnaire = () => {
         specialty: "Pediatrics",
         gender: "Female",
         location: "123 Medical Center Dr",
-        coordinates: {lat: 51.0501, lng: -114.0853 },
+        coordinates: { lat: 51.0501, lng: -114.0853 },
         distance: "2.4 miles",
         languages: ["English", "Spanish"],
         availability: ["Morning", "Afternoon"],
         serviceTypes: ["In-person", "Virtual"],
         rating: 4.8,
-        image: "/api/placeholder/100/100"
+        image: "/api/placeholder/100/100",
       },
       {
         id: 2,
@@ -80,7 +109,7 @@ const Questionnaire = () => {
         availability: ["Afternoon", "Evening"],
         serviceTypes: ["In-person"],
         rating: 4.9,
-        image: "/api/placeholder/100/100"
+        image: "/api/placeholder/100/100",
       },
       {
         id: 3,
@@ -94,43 +123,43 @@ const Questionnaire = () => {
         availability: ["Morning", "Evening"],
         serviceTypes: ["Virtual", "In-person"],
         rating: 4.7,
-        image: "/api/placeholder/100/100"
-      }
+        image: "/api/placeholder/100/100",
+      },
     ];
-    
+
     // ChatGPT Prompt: "I am unable to get my filters to work correctly. Can you help me fix them?"
     // Filter doctors based on user selections
-    const matchingDoctors = sampleDoctors.filter(doctor => {
+    const matchingDoctors = sampleDoctors.filter((doctor) => {
       let isMatch = true;
-      
+
       // Check if specialty matches
       if (answers.specialty && answers.specialty !== "General") {
         isMatch = isMatch && doctor.specialty === answers.specialty;
       }
-      
+
       // Check if gender preference matches
       if (answers.gender && answers.gender !== "No Preference") {
         isMatch = isMatch && doctor.gender === answers.gender;
       }
-      
+
       // Check if service type matches
       if (answers.serviceType) {
         isMatch = isMatch && doctor.serviceTypes.includes(answers.serviceType);
       }
-      
+
       // Check if time of day matches
       if (answers.timeOfDay) {
         isMatch = isMatch && doctor.availability.includes(answers.timeOfDay);
       }
-      
+
       // Check if language matches
       if (answers.language && answers.language !== "Other") {
         isMatch = isMatch && doctor.languages.includes(answers.language);
       }
-      
+
       return isMatch;
     });
-    
+
     // Save the results and show them
     setDoctorResults(matchingDoctors);
     setShowResults(true);
@@ -139,33 +168,44 @@ const Questionnaire = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-4 w-full max-w-2xl mx-auto">
-      
-      {!answers.location ? (
+
+      {/* Progress bar */}
+      <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
+        <div
+          className="bg-[#355D47] h-2.5 rounded-full"
+          style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
+        ></div>
+      </div>
+
+      {currentQ === null ? (
         <>
-          <h2 className="text-2xl font-semibold mb-4 text-center">
-            Let's find you the most compatible doctor.
-          </h2>
-          <p className="text-gray-600 mb-4 text-center">
-            Enter your location and we'll find doctors nearby.
-          </p>
-          <AutocompleteWrapper
-            onPlaceSelect={(locationCoords, address) => {
-              setAnswers((prev) => ({ ...prev, location: locationCoords }));
+          <LocationQ
+            onLocationSet={(locationCoords) => {
+              setAnswers({
+                ...answers,
+                location: locationCoords,
+              });
             }}
           />
+
+          <button
+            onClick={() => setCurrentQ(0)}
+            disabled={!answers.location}
+            className={`mt-4 px-6 py-3 rounded-lg shadow transition text-white w-full ${
+              answers.location
+                ? "bg-[#1B4D3E] hover:bg-[#163e32]"
+                : "bg-gray-300 cursor-not-allowed"
+            }`}
+          >
+            Continue
+          </button>
         </>
       ) : !showResults ? (
         <>
-          {/* Progress bar */}
-          <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
-            <div
-              className="bg-[#355D47] h-2.5 rounded-full"
-              style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
-            ></div>
-          </div>
-
           {/* Question */}
-          <h2 className="text-2xl font-semibold text-center">{questions[currentQ].question}</h2>
+          <h2 className="text-2xl font-semibold text-center">
+            {questions[currentQ].question}
+          </h2>
 
           {/* Answer options */}
           <div className="mt-4 w-full">
@@ -224,7 +264,9 @@ const Questionnaire = () => {
         </>
       ) : (
         <div className="w-full">
-          <h2 className="text-2xl font-semibold mb-6">Your Compatible Doctors</h2>
+          <h2 className="text-2xl font-semibold mb-6">
+            Your Compatible Doctors
+          </h2>
 
           {doctorResults.length > 0 ? (
             <div>
@@ -233,7 +275,9 @@ const Questionnaire = () => {
                   <h3>{doctor.name}</h3>
                   <p>Specialty: {doctor.specialty}</p>
                   <p>Gender: {doctor.gender}</p>
-                  <p>Location: {doctor.location} ({doctor.distance})</p>
+                  <p>
+                    Location: {doctor.location} ({doctor.distance})
+                  </p>
                   <p>Rating: {doctor.rating}</p>
                   <p>Languages: {doctor.languages.join(", ")}</p>
                   <p>Availability: {doctor.availability.join(", ")}</p>
@@ -252,5 +296,5 @@ const Questionnaire = () => {
     </div>
   );
 };
-  
+
 export default Questionnaire;

@@ -1,3 +1,8 @@
+/**
+ * Reference used for this page: https://www.youtube.com/watch?v=PfZ4oLftItk&t=154s&ab_channel=GoogleMapsPlatform
+ *
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -9,10 +14,7 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 
-/**
- * Reference used for this page: https://www.youtube.com/watch?v=PfZ4oLftItk&t=154s&ab_channel=GoogleMapsPlatform
- *
- */
+
 function GoogleMap({ doctors }) {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
