@@ -1,5 +1,7 @@
 import { useState } from "react";
 import GoogleMap from "./GoogleMap";
+import { APIProvider } from "@vis.gl/react-google-maps";
+import AutocompleteWrapper from "./AutocompleteWrapper";
 
 // List of questions to help users find doctors
 const questions = [
@@ -137,21 +139,34 @@ const Questionnaire = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-4 w-full max-w-2xl mx-auto">
-      {!showResults ? (
+      
+      {!answers.location ? (
         <>
-          {/* Reference: ChatGPT Prompt: "Please create a dynamic progress bar" */}
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            Let's find you the most compatible doctor.
+          </h2>
+          <p className="text-gray-600 mb-4 text-center">
+            Enter your location and we'll find doctors nearby.
+          </p>
+          <AutocompleteWrapper
+            onPlaceSelect={(locationCoords, address) => {
+              setAnswers((prev) => ({ ...prev, location: locationCoords }));
+            }}
+          />
+        </>
+      ) : !showResults ? (
+        <>
           {/* Progress bar */}
           <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
-            <div 
-              className="bg-[#355D47] h-2.5 rounded-full" 
+            <div
+              className="bg-[#355D47] h-2.5 rounded-full"
               style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
             ></div>
           </div>
 
-          {/* Question text */}
+          {/* Question */}
           <h2 className="text-2xl font-semibold text-center">{questions[currentQ].question}</h2>
 
-          {/* ChatGPT Prompt: "Please help implement the handleSelect function to auto advance" */}
           {/* Answer options */}
           <div className="mt-4 w-full">
             <div className="grid grid-cols-1 gap-2 w-full">
@@ -165,7 +180,6 @@ const Questionnaire = () => {
                   }`}
                   onClick={() => {
                     handleSelect(option, questions[currentQ].field);
-                    // Auto advance after selection
                     if (currentQ < questions.length - 1) {
                       setTimeout(() => handleNext(), 300);
                     }
@@ -180,27 +194,27 @@ const Questionnaire = () => {
           {/* Navigation buttons */}
           <div className="mt-4 flex gap-2 w-full">
             {currentQ > 0 && (
-              <button 
-                onClick={handlePrev} 
+              <button
+                onClick={handlePrev}
                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded flex-1"
               >
                 Previous
               </button>
             )}
-            
+
             {currentQ < questions.length - 1 && (
-              <button 
-                onClick={handleNext} 
+              <button
+                onClick={handleNext}
                 className="px-4 py-2 bg-[#1B4D3E] text-white rounded flex-1"
                 disabled={!answers[questions[currentQ].field]}
               >
                 Next
               </button>
             )}
-            
+
             {currentQ === questions.length - 1 && (
-              <button 
-                onClick={findDoctors} 
+              <button
+                onClick={findDoctors}
                 className="px-4 py-2 bg-[#1B4D3E] text-white rounded flex-1"
               >
                 Find Doctors
@@ -211,7 +225,7 @@ const Questionnaire = () => {
       ) : (
         <div className="w-full">
           <h2 className="text-2xl font-semibold mb-6">Your Compatible Doctors</h2>
-          
+
           {doctorResults.length > 0 ? (
             <div>
               {doctorResults.map((doctor) => (
@@ -228,7 +242,6 @@ const Questionnaire = () => {
               ))}
               {showMap && <GoogleMap doctors={doctorResults} />}
             </div>
-            
           ) : (
             <div>
               <p>No doctors match your criteria.</p>

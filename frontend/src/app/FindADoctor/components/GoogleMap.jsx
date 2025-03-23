@@ -26,13 +26,15 @@ function GoogleMap({ doctors }) {
 
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-      <div style={{ height: "100vh", width: "100%" }}>
+      <div style={{ height: "100vh", width: "100%", position: "relative", zIndex: 1 }}>
         <Map
           zoom={16}
           center={defaultCenter}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID}
           gestureHandling="greedy"
           disableDefaultUI={false}
+          scrollwheel={true}
+          zoomControl={true}
         >
 
           {doctors.map((doctor) => (
