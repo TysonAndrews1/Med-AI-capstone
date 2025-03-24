@@ -14,9 +14,12 @@ export default function MainLayout({ children }) {
       return (
           <div>
             {!hideHeader.includes(pathname) && <Header />}
+            {/* className="flex flex-row" */}
             
-              {!hideSidebar.includes(pathname) &&<Navbar />}
+            {!hideSidebar.includes(pathname) &&<Navbar />}
               {children}
+           
+              
             
             {!hideFooter.includes(pathname) && <Footer />}
           </div>

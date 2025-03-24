@@ -12,7 +12,7 @@ const LocationQ = ({ onLocationSet }) => {
   
         <AutocompleteWrapper
           onPlaceSelect={(locationCoords, address) => {
-            onLocationSet(locationCoords);
+            onLocationSet(locationCoords, address);
           }}
         />
       </div>

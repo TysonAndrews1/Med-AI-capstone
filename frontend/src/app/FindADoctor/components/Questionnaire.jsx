@@ -54,6 +54,8 @@ const Questionnaire = () => {
   });
   const [doctorResults, setDoctorResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [userLocation, setUserLocation] = useState(null); 
+  const [userAddress, setUserAddress] = useState("");
   
 
   // Function to handle selecting an option
@@ -77,6 +79,11 @@ const Questionnaire = () => {
     if (currentQ > 0) {
       setCurrentQ(currentQ - 1);
     }
+  };
+
+  const handleLocationSet = (locationCoords, address) => {
+    setUserLocation(locationCoords);
+    setUserAddress(address);
   };
 
   // Function to find matching doctors
@@ -113,6 +120,48 @@ const Questionnaire = () => {
       },
       {
         id: 3,
+        name: "Dr. Emily Rodriguez",
+        specialty: "Dermatology",
+        gender: "Female",
+        location: "789 Skin Care Ave",
+        coordinates: { lat: 51.048, lng: -114.066 },
+        distance: "5.1 miles",
+        languages: ["English", "Spanish"],
+        availability: ["Morning", "Evening"],
+        serviceTypes: ["Virtual", "In-person"],
+        rating: 4.7,
+        image: "/api/placeholder/100/100",
+      },
+      {
+        id: 4,
+        name: "Dr. Emily Rodriguez",
+        specialty: "Dermatology",
+        gender: "Female",
+        location: "789 Skin Care Ave",
+        coordinates: { lat: 51.048, lng: -114.066 },
+        distance: "5.1 miles",
+        languages: ["English", "Spanish"],
+        availability: ["Morning", "Evening"],
+        serviceTypes: ["Virtual", "In-person"],
+        rating: 4.7,
+        image: "/api/placeholder/100/100",
+      },
+      {
+        id: 5,
+        name: "Dr. Emily Rodriguez",
+        specialty: "Dermatology",
+        gender: "Female",
+        location: "789 Skin Care Ave",
+        coordinates: { lat: 51.048, lng: -114.066 },
+        distance: "5.1 miles",
+        languages: ["English", "Spanish"],
+        availability: ["Morning", "Evening"],
+        serviceTypes: ["Virtual", "In-person"],
+        rating: 4.7,
+        image: "/api/placeholder/100/100",
+      },
+      {
+        id: 6,
         name: "Dr. Emily Rodriguez",
         specialty: "Dermatology",
         gender: "Female",
@@ -166,26 +215,28 @@ const Questionnaire = () => {
   };
 
   if(showResults){
-    return <Results doctors={doctorResults} />;
+    return <Results doctors={doctorResults} userLocation={userAddress}/>;
   }
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-screen ">
       <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
         <div
           className="bg-[#355D47] h-2.5 rounded-full"
           style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
         ></div>
       </div>
-
+      
       {currentQ === null ? (
         <>
           <LocationQ
-            onLocationSet={(locationCoords) => {
+            onLocationSet={(locationCoords, address) => {
               setAnswers({
                 ...answers,
                 location: locationCoords,
               });
+              setUserLocation(locationCoords);
+              setUserAddress(address);
             }}
           />
 

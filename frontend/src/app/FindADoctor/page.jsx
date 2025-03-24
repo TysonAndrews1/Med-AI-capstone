@@ -8,7 +8,7 @@ export default function Page() {
   console.log("TEST VAR:", process.env.NEXT_PUBLIC_TEST_VAR); 
 
   return (
-    <div className="text-center px-20 py-10">
+    <div className="text-center px-20 py-10 bg-gray-100">
 
       {showQuestionnaire ? (
         <Questionnaire />
