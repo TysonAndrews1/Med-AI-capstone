@@ -1,6 +1,10 @@
 import GoogleMap from "./GoogleMap";
+import React, { useState } from "react";
+
 
 const Results = ({ doctors, userLocation, userAddress}) => {
+    const [highlightDoctor, setHighlightDoctor] = useState(null);
+
   return (
     <div className="flex justify-center h-screen w-full overflow-hidden ">
 
@@ -23,7 +27,9 @@ const Results = ({ doctors, userLocation, userAddress}) => {
         {doctors.length > 0 ? (
           <div className="space-y-6">
             {doctors.map((doctor) => (
-              <div key={doctor.id} className="border border-gray-300 bg-white p-4 rounded-lg mb-6">
+              <div key={doctor.id} className="border border-gray-300 bg-white p-4 rounded-lg mb-6"
+              onMouseEnter={() => setHighlightDoctor(doctor.id)}
+                onMouseLeave={() => setHighlightDoctor(null)}>
                 <h3 className="text-lg text-left font-bold ">{doctor.name}</h3>
                 <p className="text-left">Specialty: {doctor.specialty}</p>
                 <p className="text-left">Gender: {doctor.gender}</p>
@@ -45,7 +51,7 @@ const Results = ({ doctors, userLocation, userAddress}) => {
       {/* Map Section */}
       <div className="w-[500px] h-[450px] p-4">
         <div className="w-full h-full rounded-lg overflow-hidden shadow">
-          <GoogleMap doctors={doctors} userLocation={userLocation}/>
+          <GoogleMap doctors={doctors} userLocation={userLocation} highlightDoctor={highlightDoctor}/>
         </div>
       </div>
     </div>

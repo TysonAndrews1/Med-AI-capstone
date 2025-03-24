@@ -14,7 +14,7 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 
-function GoogleMap({ doctors, userLocation }) {
+function GoogleMap({ doctors, userLocation, highlightDoctor }) {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
   const defaultCenter =
@@ -38,7 +38,7 @@ function GoogleMap({ doctors, userLocation }) {
         }}
       >
         <Map
-          zoom={13}
+          zoom={12}
           center={defaultCenter}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID}
           gestureHandling="greedy"
@@ -57,26 +57,43 @@ function GoogleMap({ doctors, userLocation }) {
           )}
 
           {userLocation && (
-            <InfoWindow position={userLocation}>
+            <InfoWindow 
+              position={userLocation}>
               <div>
                 <p className="font-bold">You are here</p>
               </div>
             </InfoWindow>
           )}
 
-          {doctors.map((doctor) => (
-            <AdvancedMarker
-              key={doctor.id}
-              position={doctor.coordinates}
-              onClick={() => setSelectedDoctor(doctor)}
-            >
-              <Pin
-                background={"#355D47"}
-                borderColor={"white"}
-                glyphColor={"white"}
-              />
-            </AdvancedMarker>
-          ))}
+{doctors.map((doctor) => {
+  const isHighlighted = doctor.id === highlightDoctor;
+  console.log("Hovered doctor ID:", highlightDoctor);
+
+
+  return (
+    <AdvancedMarker
+      key={doctor.id}
+      position={doctor.coordinates}
+      onClick={() => setSelectedDoctor(doctor)}
+    >
+       {isHighlighted ? (
+        <Pin
+          background="red"
+          borderColor="white"
+          glyphColor="white"
+          scale={isHighlighted ? 1.5 : 1}
+        />
+      ) : (
+        <Pin
+          background="#355D47"
+          borderColor="white"
+          glyphColor="white"
+        />
+      )}
+    </AdvancedMarker>
+  );
+})}
+
 
           {selectedDoctor && (
             <InfoWindow
