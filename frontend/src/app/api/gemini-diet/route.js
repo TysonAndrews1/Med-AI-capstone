@@ -1,3 +1,4 @@
+//This was made for the Diet Assistant feature. Adjust the code to fit your needs.
 import { NextResponse } from "next/server";
 import { getGeminiDietRecommendation } from "@/utils/GeminiDiet";
 

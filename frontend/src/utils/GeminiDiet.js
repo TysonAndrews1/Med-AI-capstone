@@ -7,9 +7,41 @@ export async function getGeminiDietRecommendation(userInputs) {
 
   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`; // API URL, using gemini-1.5-flash model
 
-  const prompt = `Based on the user's inputs: ${JSON.stringify(
+  const prompt = `Based on the user's inputs: ${JSON.stringify( // This is the prompt that will be sent to the API, it is adjusted to provide recommendations.
     userInputs
-  )}, suggest a list of meal recommendations and recipe ideas that suit their needs.`;
+  )}, you are a diet assistant that provide meal suggestions based on user input.
+
+Please give the response in this format without any markdown or special characters to properly display the response onto the website:
+
+Description of the recommendation
+- Description
+
+Breakfast
+- Description & recipe
+- Description & recipe
+- Description & recipe
+- Description & recipe
+- Description & recipe
+
+Lunch
+- Description & recipe
+- Description & recipe
+- Description & recipe
+- Description & recipe
+- Description & recipe
+
+Dinner
+- Description & recipe
+- Description & recipe
+- Description & recipe
+- Description & recipe
+- Description & recipe
+
+Foods To Keep In Your Diet
+- Food with description
+- Food with description
+- Food with description (add more foods as needed)
+`;
 
   const requestBody = { // This is what will be sent to the API
     contents: [
