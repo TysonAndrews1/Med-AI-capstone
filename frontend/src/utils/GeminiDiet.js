@@ -21,17 +21,14 @@ Breakfast
 - Description & recipe
 - Description & recipe
 - Description & recipe
-- Description & recipe
 
 Lunch
 - Description & recipe
 - Description & recipe
 - Description & recipe
 - Description & recipe
-- Description & recipe
 
 Dinner
-- Description & recipe
 - Description & recipe
 - Description & recipe
 - Description & recipe
