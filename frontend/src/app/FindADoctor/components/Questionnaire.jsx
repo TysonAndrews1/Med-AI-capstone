@@ -215,7 +215,7 @@ const Questionnaire = () => {
   };
 
   if(showResults){
-    return <Results doctors={doctorResults} userLocation={userAddress}/>;
+    return <Results doctors={doctorResults} userLocation={userLocation} userAddress={userAddress}/>;
   }
 
   return (

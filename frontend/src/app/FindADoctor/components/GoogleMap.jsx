@@ -14,23 +14,31 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 
-
-function GoogleMap({ doctors }) {
+function GoogleMap({ doctors, userLocation }) {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
-  const defaultCenter = doctors.length > 0 ? doctors[0].coordinates : { lat: 51.0645, lng: -114.09041 };
+  const defaultCenter =
+    doctors.length > 0
+      ? doctors[0].coordinates
+      : { lat: 51.0645, lng: -114.09041 };
 
   console.log(
     "Google Maps API Key:",
     process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
   );
 
-
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-      <div style={{ height: "100%", width: "100%", position: "relative", zIndex: 1 }}>
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <Map
-          zoom={16}
+          zoom={13}
           center={defaultCenter}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID}
           gestureHandling="greedy"
@@ -38,6 +46,23 @@ function GoogleMap({ doctors }) {
           scrollwheel={true}
           zoomControl={true}
         >
+          {userLocation && (
+            <AdvancedMarker position={userLocation}>
+              <Pin
+                background={"red"}
+                borderColor={"white"}
+                glyphColor={"white"}
+              />
+            </AdvancedMarker>
+          )}
+
+          {userLocation && (
+            <InfoWindow position={userLocation}>
+              <div>
+                <p className="font-bold">You are here</p>
+              </div>
+            </InfoWindow>
+          )}
 
           {doctors.map((doctor) => (
             <AdvancedMarker

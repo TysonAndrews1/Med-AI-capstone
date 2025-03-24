@@ -1,6 +1,6 @@
 import GoogleMap from "./GoogleMap";
 
-const Results = ({ doctors, userLocation }) => {
+const Results = ({ doctors, userLocation, userAddress}) => {
   return (
     <div className="flex justify-center h-screen w-full overflow-hidden ">
 
@@ -11,7 +11,7 @@ const Results = ({ doctors, userLocation }) => {
         <div className="space-y-6"> 
             <div className="border border-gray-300 bg-white p-4 rounded-lg mb-6">
                 <div className="mb-4">
-                    <p>Showing results near: <span className="font-semibold">{userLocation}</span></p>
+                    <p>Showing results near: <span className="font-semibold">{userAddress}</span></p>
                 </div>
                 <button className="w-full bg-[#1B4D3E] text-white py-2 rounded">
                 Modify your Search
@@ -45,7 +45,7 @@ const Results = ({ doctors, userLocation }) => {
       {/* Map Section */}
       <div className="w-[500px] h-[450px] p-4">
         <div className="w-full h-full rounded-lg overflow-hidden shadow">
-          <GoogleMap doctors={doctors} />
+          <GoogleMap doctors={doctors} userLocation={userLocation}/>
         </div>
       </div>
     </div>
