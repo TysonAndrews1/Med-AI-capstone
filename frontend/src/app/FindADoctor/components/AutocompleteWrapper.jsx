@@ -39,8 +39,8 @@ const AutocompleteWrapper = ({ onPlaceSelect }) => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Enter your location"
-          className="border p-3 w-full rounded-lg mb-6"
+          placeholder="Enter a location"
+          className="border border-gray-300 p-3 w-150 shadow-sm rounded-lg mb-6 "
         />
       </Autocomplete>
     </LoadScript>

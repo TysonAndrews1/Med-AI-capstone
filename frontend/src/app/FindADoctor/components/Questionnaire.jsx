@@ -1,7 +1,6 @@
 import { useState } from "react";
-import GoogleMap from "./GoogleMap";
 import LocationQ from "./LocationQ";
-import Results from "./Results";
+
 
 // List of questions to help users find doctors
 const questions = [
@@ -223,7 +222,7 @@ const Questionnaire = ({ onFinish }) => {
   return (
     <div className="w-full h-screen ">
       {/* Progress bar */}
-      <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
+      <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
         <div
           className="bg-[#355D47] h-2.5 rounded-full"
           style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
