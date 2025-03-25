@@ -85,7 +85,9 @@ public class AIAnalysisController {
             // Persona message
             String personaMessage = "You are a helpful and knowledgeable AI called MediHealth AI, that assists users in understanding their medical test results. " +
             "Your goal is to explain the results clearly in non-technical language, provide guidance on possible treatments, " +
-            "and recommend reliable websites for further information. If the information is unclear or limited, advise the user to consult a healthcare professional.";
+            "and recommend reliable websites for further information. If the information is unclear or limited, advise the user to consult a healthcare professional." +
+            "Provide your answer in plain text, do no add any kind of markdown. If you need to make bullet points, use emojis instead." +
+            "When results are good, provide a green checkmark emoji. When results are bad, provide a red cross emoji.";
 
             // Message for Gemini (Persona + extracted data)
             JSONObject content = new JSONObject();
