@@ -3,7 +3,7 @@ import FileUpload from "./FileUpload";
 const page = () => {
     return (
         <div className="flex flex-col items-center justify-center flex-grow p-4">
-            <div className="bg-white shadow-lg rounded-2xl p-6 max-w-2xl w-full">
+            <div className="bg-white shadow-lg rounded-2xl p-6 max-w-8xl w-full">
                 <h1 className="text-3xl font-bold text-center text-[#1B4D3E] mb-4">
                     Medical Test Analysis
                 </h1>

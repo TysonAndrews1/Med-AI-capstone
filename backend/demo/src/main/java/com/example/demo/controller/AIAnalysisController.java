@@ -82,9 +82,17 @@ public class AIAnalysisController {
             HttpPost request = new HttpPost(apiUrl);
             request.setHeader("Content-Type", "application/json");
 
-            // Gemini API expects content inside `contents`
+            // Persona message
+            String personaMessage = "You are a helpful and knowledgeable AI called MediHealth AI, that assists users in understanding their medical test results. " +
+            "Your goal is to explain the results clearly in non-technical language, provide guidance on possible treatments, " +
+            "and recommend reliable websites for further information. If the information is unclear or limited, advise the user to consult a healthcare professional.";
+
+            // Message for Gemini (Persona + extracted data)
             JSONObject content = new JSONObject();
-            content.put("contents", new JSONObject().put("parts", new JSONObject().put("text", extractedText)));
+            content.put("contents", new JSONObject()
+                    .put("parts", new JSONObject()
+                            .put("text", personaMessage + "\n\n" + extractedText)
+                    ));
 
             StringEntity entity = new StringEntity(content.toString());
             request.setEntity(entity);
