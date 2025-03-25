@@ -1,5 +1,5 @@
 // Reference: https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety
-// This reference was used to learn how to store API keys securely in a Next.js app instead of the frontend.
+// This reference was used to learn how to store API keys securely in a Next.js app instead of the frontend. I got help from this reference for the initial build, but I have changed the API to Gemini instead.
 
 "use client";
 
@@ -45,21 +45,33 @@ export default function DietAssistant() {
 
   const handleSelect = (questionId, option) => {
     setAnswers((prev) => {
-      const selectedOptions = prev[questionId] || [];
+      const prevEntry = prev[questionId] || [];
+      const selected = prevEntry.selected || [];
 
       if (questionId === 5) { // Only allow the user to select one option for question 5.
-        return { ...prev, [questionId]: [option] };
+        return { ...prev, [questionId]: { ...prevEntry, selected: [option] } };
       }
 
-      if (option === "None") { // If the user selects "None", then the other options are removed.
-        return selectedOptions.includes("None") ? { ...prev, [questionId]: [] } : { ...prev, [questionId]: ["None"] };
+      if (option === "None") {
+        return {
+          ...prev,
+          [questionId]: {
+            ...prevEntry,
+            selected: selected.includes("None") ? [] : ["None"]
+          },
+        };
       } else {
-        if (selectedOptions.includes("None")) { // If the user selects an option other than "None", then "None" is removed.
-          return prev;
-        }
-        return selectedOptions.includes(option) // If the user selects an option that is already selected, then it is removed.
-          ? { ...prev, [questionId]: selectedOptions.filter((item) => item !== option) }
-          : { ...prev, [questionId]: [...selectedOptions, option] };
+        if (selected.includes("None")) return prev; // Deselect "None" if something else is picked
+  
+        return {
+          ...prev,
+          [questionId]: {
+            ...prevEntry,
+            selected: selected.includes(option)
+              ? selected.filter((item) => item !== option)
+              : [...selected, option],
+          },
+        };
       }
     });
   };
@@ -71,16 +83,22 @@ export default function DietAssistant() {
       console.log("User responses:", answers);
   
       const userProfile = {
-        Health_Goals: answers[1]?.join(", ") || "Not specified",
-        Dietary_Restrictions: answers[2]?.join(", ") || "None",
-        Food_Allergies: answers[3]?.join(", ") || "None",
-        Foods_Avoided: answers[4]?.join(", ") || "None",
-        Activity_Level: answers[5]?.[0] || "Not specified",
+        Health_Goals: answers[1]?.selected?.join(", ") || "Not specified",
+        Dietary_Restrictions: answers[2]?.selected?.join(", ") || "None",
+        Food_Allergies: answers[3]?.selected?.join(", ") || "None",
+        Foods_Avoided: answers[4]?.selected?.join(", ") || "None",
+        Activity_Level: answers[5]?.selected?.[0] || "Not specified",
         Height: answers[6]?.height || "Not specified",
         Weight: answers[6]?.weight || "Not specified",
         Desired_Weight: answers[6]?.desiredWeight || "Not specified",
-        Additional_Details: answers.extra || "None provided",
-      };
+        Additional_Details: {
+          Health_Goals: answers[1]?.extra || "None",
+          Dietary_Restrictions: answers[2]?.extra || "None",
+          Food_Allergies: answers[3]?.extra || "None",
+          Foods_Avoided: answers[4]?.extra || "None",
+          Activity_Level: answers[5]?.extra || "None",
+        },
+      };      
   
       const encodedData = encodeURIComponent(JSON.stringify(userProfile));
       window.location.href = `/DietAssistantResults?data=${encodedData}`;
@@ -95,7 +113,7 @@ export default function DietAssistant() {
             This diet assistant will be able to provide different recipes and suitable food choices based on your needs and medical concerns.
           </h2>
           <p className="text-lg text-gray-700">
-            Before we continue, I need to know more about yourself. Please answer the following questions for a more personalized answer.
+            Before we continue, I need to know more about yourself. Please answer the following questions for a more personalized answer. Feel free to add any additional details that we need to know for each question.
           </p>
         </div>
 
@@ -108,29 +126,87 @@ export default function DietAssistant() {
             <div className="flex flex-col space-y-3 mt-4 px-2 flex-grow overflow-y-auto">
               {questions[step].id === 6 ? (
                 <div className="flex flex-col space-y-4">
-                  <input type="text" className="w-full p-3 border rounded-lg text-lg" placeholder="Enter your height (cm)"
-                    value={answers[6]?.height || ""} onChange={(e) => setAnswers((prev) => ({ ...prev, 6: { ...prev[6], height: e.target.value } }))} />
-                  <input type="text" className="w-full p-3 border rounded-lg text-lg" placeholder="Enter your weight (lbs)"
-                    value={answers[6]?.weight || ""} onChange={(e) => setAnswers((prev) => ({ ...prev, 6: { ...prev[6], weight: e.target.value } }))} />
-                  <input type="text" className="w-full p-3 border rounded-lg text-lg" placeholder="Enter your desired weight (lbs)"
-                    value={answers[6]?.desiredWeight || ""} onChange={(e) => setAnswers((prev) => ({ ...prev, 6: { ...prev[6], desiredWeight: e.target.value } }))} />
+                  <input
+                    type="text"
+                    className="w-full p-3 border rounded-lg text-lg"
+                    placeholder="Enter your height (cm)"
+                    value={answers[6]?.height || ""}
+                    onChange={(e) =>
+                      setAnswers((prev) => ({
+                        ...prev,
+                        6: {
+                          ...prev[6],
+                          height: e.target.value,
+                        },
+                      }))
+                    }
+                  />
+                  <input
+                    type="text"
+                    className="w-full p-3 border rounded-lg text-lg"
+                    placeholder="Enter your weight (lbs)"
+                    value={answers[6]?.weight || ""}
+                    onChange={(e) =>
+                      setAnswers((prev) => ({
+                        ...prev,
+                        6: {
+                          ...prev[6],
+                          weight: e.target.value,
+                        },
+                      }))
+                    }
+                  />
+                  <input
+                    type="text"
+                    className="w-full p-3 border rounded-lg text-lg"
+                    placeholder="If necessary, enter your desired weight (lbs)"
+                    value={answers[6]?.desiredWeight || ""}
+                    onChange={(e) =>
+                      setAnswers((prev) => ({
+                        ...prev,
+                        6: {
+                          ...prev[6],
+                          desiredWeight: e.target.value,
+                        },
+                      }))
+                    }
+                  />
                 </div>
               ) : (
-                questions[step].options.map((option) => (
-                  <button key={option} className={`px-6 py-3 text-lg rounded-lg border ${answers[questions[step].id]?.includes(option) ? "bg-[#1B4D3E] text-white" : "bg-gray-100 hover:bg-gray-300"}`}
-                    onClick={() => handleSelect(questions[step].id, option)}>{option}
-                  </button>
-                ))
+                questions[step].options.map((option) => {
+                  const selected = answers[questions[step].id]?.selected || [];
+                  return (
+                    <button
+                      key={option}
+                      className={`px-6 py-3 text-lg rounded-lg border ${
+                        selected.includes(option)
+                          ? "bg-[#1B4D3E] text-white"
+                          : "bg-gray-100 hover:bg-gray-300"
+                      }`}
+                      onClick={() => handleSelect(questions[step].id, option)}
+                    >
+                      {option}
+                    </button>
+                  );
+                })
               )}
 
-              {questions[step].id !== 6 && ( //Reference: ChatGPT. Prompt: "How do I integrate a text box for each question except question 6?"
+              {questions[step].id !== 6 && (
                 <textarea
                   className="w-full p-3 border rounded-lg text-lg h-[120px] max-h-[120px] overflow-y-auto"
-                  placeholder="Add additional details..."
+                  placeholder="Add any additional details we need to know."
+                  value={answers[questions[step].id]?.extra || ""}
                   onChange={(e) =>
-                    setAnswers((prev) => ({ ...prev, extra: e.target.value })) // This is used to store the additional details entered by the user.
+                    setAnswers((prev) => ({
+                      ...prev,
+                      [questions[step].id]: {
+                        ...prev[questions[step].id],
+                        selected: answers[questions[step].id]?.selected || [],
+                        extra: e.target.value,
+                      },
+                    }))
                   }
-                ></textarea>
+                />
               )}
             </div>
 
@@ -145,7 +221,7 @@ export default function DietAssistant() {
 
       {aiRecommendation && (
         <div className="mt-6 p-6 bg-white rounded-lg shadow-lg w-[550px]">
-          <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">AI Recommended Meals:</h3>
+          <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">MediHealth AI Recommended Meals:</h3>
           <p className="text-gray-700 whitespace-pre-line">{aiRecommendation}</p>
         </div>
       )}
