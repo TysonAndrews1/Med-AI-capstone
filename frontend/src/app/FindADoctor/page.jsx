@@ -33,7 +33,7 @@ export default function Page() {
               👋 Welcome to MediHealth Ai!
             </h1>
             <p className="text-lg text-gray-700">
-              We're going to help you find the perfect doctor in your city. In
+              We're going to help you find the perfect practitioner in your city. In
               less than 30 seconds, we'll personalize your results by asking a
               few quick questions. Let's get started!
             </p>
