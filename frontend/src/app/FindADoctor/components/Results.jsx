@@ -9,7 +9,7 @@ const Results = ({ doctors, userLocation, userAddress}) => {
     <div className="flex justify-center h-screen w-full overflow-hidden ">
 
       {/* Sidebar Doctor Results */}
-      <div className="w-[600px] overflow-y-auto p-6">
+      <div className="w-[600px] overflow-y-auto p-6 hide-scrollbar">
 
         {/* The user's location + Modify search */}
         <div className="space-y-6"> 

@@ -245,7 +245,7 @@ const Questionnaire = ({ onFinish }) => {
           <button
             onClick={() => setCurrentQ(0)}
             disabled={!answers.location}
-            className={`mt-4 px-6 py-3 rounded-lg shadow transition text-white w-full ${
+            className={`mt-2 py-3 rounded-3xl shadow transition text-white w-40 block mx-auto ${
               answers.location
                 ? "bg-[#1B4D3E] hover:bg-[#163e32]"
                 : "bg-gray-300 cursor-not-allowed"
@@ -256,7 +256,7 @@ const Questionnaire = ({ onFinish }) => {
         </>
       ) : (
         <>
-          <h2 className="text-2xl font-semibold text-center">
+          <h2 className="text-2xl font-semibold text-center py-4">
             {questions[currentQ].question}
           </h2>
 
