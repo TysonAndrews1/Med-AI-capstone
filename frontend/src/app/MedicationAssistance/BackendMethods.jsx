@@ -13,6 +13,17 @@ export async function getDrugId (drugId) {
             return null; 
         };
 }
+export async function getDrugs(){
+    try {
+        const response = await fetch(`${apiURL}/drugs`);
+        const data = await response.json();
+        console.log("Fetched Data:", data); 
+        return data; 
+    } catch (error) {
+        console.error("Error:", error);
+        return null; 
+    };
+}
 
 
 export async function sendEmail (emailObject){
