@@ -16,6 +16,7 @@ import {
 
 function GoogleMap({ doctors, userLocation, highlightDoctor }) {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectUserLocation, setSelectUserLocation] = useState(false);
 
   const defaultCenter =
     doctors.length > 0
@@ -47,53 +48,56 @@ function GoogleMap({ doctors, userLocation, highlightDoctor }) {
           zoomControl={true}
         >
           {userLocation && (
-            <AdvancedMarker position={userLocation}>
+            <AdvancedMarker
+              position={userLocation}
+              onClick={() => setSelectUserLocation(true)}
+            >
               <Pin
-                background={"red"}
+                background={"blue"}
                 borderColor={"white"}
                 glyphColor={"white"}
               />
             </AdvancedMarker>
           )}
 
-          {userLocation && (
-            <InfoWindow 
-              position={userLocation}>
+          {selectUserLocation === true && (
+            <InfoWindow
+              position={userLocation}
+              onCloseClick={() => setSelectUserLocation(false)}
+            >
               <div>
-                <p className="font-bold">You are here</p>
+                <p className="font-bold">Your Location</p>
               </div>
             </InfoWindow>
           )}
 
-{doctors.map((doctor) => {
-  const isHighlighted = doctor.id === highlightDoctor;
-  console.log("Hovered doctor ID:", highlightDoctor);
+          {doctors.map((doctor) => {
+            const isHighlighted = doctor.id === highlightDoctor;
+            console.log("Hovered doctor ID:", highlightDoctor);
 
-
-  return (
-    <AdvancedMarker
-      key={doctor.id}
-      position={doctor.coordinates}
-      onClick={() => setSelectedDoctor(doctor)}
-    >
-       {isHighlighted ? (
-        <Pin
-          background="red"
-          borderColor="white"
-          glyphColor="white"
-          scale={isHighlighted ? 1.5 : 1}
-        />
-      ) : (
-        <Pin
-          background="#355D47"
-          borderColor="white"
-          glyphColor="white"
-        />
-      )}
-    </AdvancedMarker>
-  );
-})}
-
+            return (
+              <AdvancedMarker
+                key={doctor.id}
+                position={doctor.coordinates}
+                onClick={() => setSelectedDoctor(doctor)}
+              >
+                {isHighlighted ? (
+                  <Pin
+                    background="red"
+                    borderColor="white"
+                    glyphColor="white"
+                    scale={isHighlighted ? 1.5 : 1}
+                  />
+                ) : (
+                  <Pin
+                    background="#355D47"
+                    borderColor="white"
+                    glyphColor="white"
+                  />
+                )}
+              </AdvancedMarker>
+            );
+          })}
 
           {selectedDoctor && (
             <InfoWindow

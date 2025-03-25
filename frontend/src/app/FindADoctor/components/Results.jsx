@@ -1,6 +1,7 @@
 import GoogleMap from "./GoogleMap";
 import React, { useState } from "react";
 
+
 const Results = ({ doctors, userLocation, userAddress }) => {
   const [highlightDoctor, setHighlightDoctor] = useState(null);
 
@@ -29,7 +30,7 @@ const Results = ({ doctors, userLocation, userAddress }) => {
             {doctors.map((doctor, index) => (
               <div
                 key={doctor.id}
-                className="border border-gray-300 bg-white p-6 rounded-xl shadow-md relative group transition hover:shadow-lg"
+                className="border border-gray-300 bg-white p-6 rounded-xl shadow-md relative group transition hover:shadow-lg hover:border-[#1B4D3E]"
                 onMouseEnter={() => setHighlightDoctor(doctor.id)}
                 onMouseLeave={() => setHighlightDoctor(null)}
               >
@@ -38,22 +39,41 @@ const Results = ({ doctors, userLocation, userAddress }) => {
                   {index + 1}
                 </div>
 
-                <h3 className="text-lg text-left font-bold ">{doctor.name}</h3>
-                <p className="text-left">Specialty: {doctor.specialty}</p>
-                <p className="text-left">Gender: {doctor.gender}</p>
-                <p className="text-left">
-                  Location: {doctor.location} ({doctor.distance})
-                </p>
-                <p className="text-left">Rating: {doctor.rating}</p>
-                <p className="text-left">
-                  Languages: {doctor.languages.join(", ")}
-                </p>
+                {/* Name & Specialty */}
+                <div className="mb-2">
+                  <h3 className="text-xl font-bold text-[#1B4D3E]">
+                    {doctor.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">{doctor.specialty}</p>
+                </div>
+
+                {/* Location and Review */}
+                <div className="mb-2">
+                  <p className="text-gray-500 text-sm">
+                  📍 {doctor.location} | {(doctor.distance)}
+                  </p>
+                </div>
+
+                {/* rating */}
+                <div className="mb-4">
+                  <p className="text-sm">
+                     ⭐{" "}
+                    {doctor.rating}
+                  </p>
+                </div>
+
+                {/* Services */}
+                <div className="mb-3">
+                  <p className="font-bold">Available Service Types</p>
+                  <p className="text-sm"> ✔️ {doctor.serviceTypes.join(", ")}</p>
+                  <p className="text-sm"> ✔️ {doctor.languages.join(", ")}</p>
+                </div>
+              
+               
                 <p className="text-left">
                   Availability: {doctor.availability.join(", ")}
                 </p>
-                <p className="text-left">
-                  Services: {doctor.serviceTypes.join(", ")}
-                </p>
+                
               </div>
             ))}
           </div>
