@@ -7,20 +7,19 @@ import { usePathname } from "next/navigation";
 
 export default function MainLayout({ children }) {
     const pathname = usePathname();
-    const hideHeader = ["/FindADoctor", "/additional if needed"]; 
+    const hideHeader = ["", "/additional if needed"]; 
     const hideFooter = ["/FindADoctor", "/additional if needed"]; 
-    const hideSidebar = ["/FindADoctor", "/additional if needed"]; 
+    const hideSidebar = ["", "/additional if needed"]; 
   
       return (
           <div>
             {!hideHeader.includes(pathname) && <Header />}
-            {/* className="flex flex-row" */}
-            
-            {!hideSidebar.includes(pathname) &&<Navbar />}
+
+            <div className="flex flex-row">
+              {!hideSidebar.includes(pathname) &&<Navbar />}
               {children}
            
-              
-            
+            </div>
             {!hideFooter.includes(pathname) && <Footer />}
           </div>
       );

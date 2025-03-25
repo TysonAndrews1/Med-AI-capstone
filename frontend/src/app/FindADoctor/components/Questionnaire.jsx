@@ -42,7 +42,7 @@ const questions = [
   },
 ];
 
-const Questionnaire = () => {
+const Questionnaire = ({ onFinish }) => {
   const [currentQ, setCurrentQ] = useState(null);
   const [answers, setAnswers] = useState({
     location: "",
@@ -214,12 +214,15 @@ const Questionnaire = () => {
     setShowResults(true);
   };
 
-  if(showResults){
-    return <Results doctors={doctorResults} userLocation={userLocation} userAddress={userAddress}/>;
+  if (showResults) {
+    onFinish(doctorResults, userLocation, userAddress);
+    return null;
   }
+  
 
   return (
     <div className="w-full h-screen ">
+      {/* Progress bar */}
       <div className="w-md bg-gray-200 rounded-full h-2.5 mb-6">
         <div
           className="bg-[#355D47] h-2.5 rounded-full"
