@@ -24,7 +24,7 @@ export default function Header(){
           </div>
       
           {/* Button - Right Aligned */}
-          <button className="flex items-center space-x-2 px-4 py-2 bg-[#1B4D3E] text-white rounded-lg hover:"
+          <button className="flex items-center space-x-2 px-4 py-2 bg-[#1B4D3E] text-white rounded-lg cursor-pointer"
           onClick={handleAssessmentStart}>
             <p>Start Health Assessment</p>
             {/* <icon className="w-5 h-5" /> */}
