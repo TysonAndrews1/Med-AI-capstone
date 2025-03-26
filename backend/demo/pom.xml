@@ -74,6 +74,11 @@
         <version>1.18.24</version> <!-- Check for the latest version -->
         <scope>provided</scope>
     </dependency>
+	                <dependency>
+                        <groupId>com.twilio.sdk</groupId>
+                        <artifactId>twilio</artifactId>
+                        <version>8.8.0</version>
+                </dependency>
 
 
 	</dependencies>

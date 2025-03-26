@@ -12,6 +12,7 @@ export default function EmailForm() {
     reminderInterval: "",
     phone: "" 
   });
+  const [confirm, setConfirm] = useState(false)
 
   //takes in a key value pair
   const handleChange = (e) => {
@@ -29,10 +30,14 @@ export default function EmailForm() {
     console.log(emailObject);
 
     sendEmail(emailObject);
+    setConfirm(true)
   };
 
   return (
+    
     <div className="w-3/4 mx-auto p-6 bg-white rounded-lg shadow-md">
+      {confirm == false ? (
+        <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Reminder Form</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -105,7 +110,10 @@ export default function EmailForm() {
         >
           Submit
         </button>
-      </form>
+      </form></div> ) :<div className="items-center">
+        <h1 className="text-3xl bold">Confirmation</h1>
+        <p>Email Set up successfully </p>
+        </div>}
     </div>
   );
 }

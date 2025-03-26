@@ -58,12 +58,13 @@ const MedicineForm = () => {
       };
       
     return (
+
 <form 
   className="w-3/4  mx-auto bg-white shadow-lg rounded-lg p-6 space-y-4 flex flex-col min-h-[400px]"
   onSubmit={handleSubmit}
 >
   <h4 className="text-lg font-semibold text-gray-700 text-center">
-    Please type in the Medicine you would like a simple analysis for
+  Please type in the medication you would like to learn more about.
   </h4>
 
   <Select
@@ -78,12 +79,7 @@ const MedicineForm = () => {
     className="w-full"
   />
 
-  <button 
-    type="submit" 
-    className="w-full basic-button"
-  >
-    Get Assessment
-  </button>
+  <button type="submit" className="w-full basic-button">Get Information</button>
 
   {/* Responsive and contained response box */}
   <div className="relative overflow-hidden">

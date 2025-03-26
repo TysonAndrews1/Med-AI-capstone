@@ -19,13 +19,13 @@ export default function page(){
         }, []);
         
         return (
-          <div className="flex flex-1 w-full h-screen">
+          <div className="flex flex-1 w-full h-screen bg-gray-100 ">
             {pageState === "" ? (
               <>
                 {/* Left Box */}
-                <div className="flex-1 flex flex-col items-center justify-center p-8 border-r border-gray-300">
+                <div className="flex-1 flex flex-col items-center justify-center p-8 border-r border-gray-300 bg-white">
                   <h1 className="CgreenText text-3xl font-bold">Medication Learning</h1>
-                  <h3 className="CgreenText text-xl">Learn more of a specific branded Medicine</h3>
+                  <h3 className="CgreenText text-xl">Learn more about a specific medication</h3>
                   <button
                     className="basic-button"
                     onClick={() => setPageState("MedicineForm")}
@@ -36,8 +36,8 @@ export default function page(){
       
                 {/* Right Box */}
                 <div className="flex-1 flex flex-col items-center justify-center p-8">
-                  <h1 className="CgreenText text-3xl font-bold">Medicine Reminders</h1>
-                  <h3 className="CgreenText text-xl">Set an Email Reminder so to never forget the important step</h3>
+                  <h1 className="CgreenText text-3xl font-bold">Medication Reminders</h1>
+                  <h3 className="CgreenText text-xl">Set email reminders so you never miss a dose</h3>
                   <button
                     className="basic-button"
                     onClick={() => setPageState("EmailForm")}
